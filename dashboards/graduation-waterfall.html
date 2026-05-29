@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CSU Graduation Rate Waterfall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--g:#006633;--g2:#007A3D;--g3:#00A85A;--gold:#C8993A;--gold-lt:#F5E9CE;--bg:#EFF4F1;--card:#FFF;--g100:#F3F4F6;--g200:#E5E7EB;--g400:#9CA3AF;--g600:#4B5563;--g800:#1F2937;--red:#DC2626;--red-lt:#FEF2F2;--teal:#0F6E56;--r:12px;--sh:0 1px 4px rgba(0,0,0,.09);--sh2:0 4px 18px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--g800)}
+header{background:linear-gradient(135deg,#003d1f 0%,var(--g) 55%,var(--g2) 100%);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,60,30,.4)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;max-width:1600px;margin:0 auto;flex-wrap:wrap;gap:10px}
+.hb{display:flex;align-items:center;gap:13px}
+.hl{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.25)}
+.ht{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1.2}
+.hsb{font-size:10px;opacity:.7;letter-spacing:.7px;text-transform:uppercase;margin-top:2px}
+.hr{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.fs{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:7px 28px 7px 11px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.7)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
+.fs option{background:#004422;color:#fff}
+.badge{background:var(--gold);color:#fff;padding:4px 11px;border-radius:20px;font-size:10.5px;font-weight:600;text-transform:uppercase}
+.back-btn{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.back-btn:hover{background:rgba(255,255,255,.22)}
+main{max-width:1400px;margin:0 auto;padding:22px 28px 48px}
+.sl{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--g);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--g200)}
+.kg{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:22px}
+@media(max-width:1000px){.kg{grid-template-columns:repeat(3,1fr)}}
+.kc{background:var(--card);border-radius:var(--r);padding:18px 20px 16px;box-shadow:var(--sh);border:1px solid var(--g200);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.kc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.kc.c1::before{background:#185FA5}.kc.c2::before{background:#0F6E56}.kc.c3::before{background:#006633}.kc.c4::before{background:#C8993A}.kc.c5::before{background:#A32D2D}
+.ki{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}
+.kc.c1 .ki{background:#E6F1FB}.kc.c2 .ki{background:#E1F5EE}.kc.c3 .ki{background:#E8F5EE}.kc.c4 .ki{background:var(--gold-lt)}.kc.c5 .ki{background:var(--red-lt)}
+.kl{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+.kv{font-family:'DM Mono',monospace;font-size:27px;font-weight:500;color:var(--g800);line-height:1;margin-bottom:5px}
+.tg{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;padding:2px 6px;border-radius:20px}
+.tg.up{background:#DCFCE7;color:#16A34A}.tg.dn{background:var(--red-lt);color:var(--red)}.tg.fl{background:var(--g100);color:var(--g600)}
+.ks{position:absolute;bottom:8px;right:11px;font-size:9px;color:var(--g400);text-transform:uppercase}
+.g2{display:grid;grid-template-columns:3fr 2fr;gap:14px;margin-bottom:14px}
+.g22{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1100px){.g2,.g22{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);overflow:hidden}
+.ch{padding:14px 18px 11px;border-bottom:1px solid var(--g100);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ct{font-size:13px;font-weight:600;color:var(--g800)}.cs{font-size:10.5px;color:var(--g400);margin-top:2px}
+.ctg{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:#E8F5EE;color:var(--g);white-space:nowrap;flex-shrink:0}
+.ctg.teal{background:#E1F5EE;color:var(--teal)}.ctg.gold{background:var(--gold-lt);color:#854F0B}
+.cb{padding:14px 18px 18px}
+.leg{display:flex;flex-wrap:wrap;gap:9px;padding:0 18px 12px}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g600)}
+.ld{width:9px;height:9px;border-radius:2px}
+.wf-bars{display:flex;flex-direction:column;gap:0}
+.wf-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.wf-year{width:54px;font-size:10.5px;font-weight:600;color:var(--g600);flex-shrink:0;text-align:right}
+.wf-track{flex:1;height:32px;background:var(--g100);border-radius:6px;overflow:hidden;position:relative;display:flex}
+.wf-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;color:#fff;transition:width .5s ease;min-width:0;overflow:hidden}
+.wf-note{font-size:9.5px;color:var(--g400);width:60px;flex-shrink:0}
+footer{background:#003d1f;color:rgba(255,255,255,.5);text-align:center;padding:15px;font-size:11px}
+footer b{color:rgba(255,255,255,.85);font-weight:500}
+</style>
+</head>
+<body>
+<header>
+  <div class="hi">
+    <div class="hb">
+      <div class="hl">CSU</div>
+      <div><div class="ht">Graduation Rate Waterfall</div><div class="hsb">Cleveland State University · 4-yr / 5-yr / 6-yr / 8-yr cohort analysis</div></div>
+    </div>
+    <div class="hr">
+      <select class="fs" id="fc" onchange="apply()">
+        <option value="all">All Students</option>
+        <option value="ft">Full-time only</option>
+        <option value="pell">Pell-eligible</option>
+        <option value="transfer">Transfer</option>
+      </select>
+      <select class="fs" id="fd" onchange="apply()">
+        <option value="all">All Demographics</option>
+        <option value="white">White</option>
+        <option value="black">Black/African Amer.</option>
+        <option value="hispanic">Hispanic/Latino</option>
+        <option value="intl">International</option>
+      </select>
+      <a href="../index.html" class="back-btn">← Portal Home</a>
+      <div class="badge">IPEDS GRS</div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="sl">Completion milestone KPIs — 2018 entering cohort (most recent 6-yr data)</div>
+  <div class="kg">
+    <div class="kc c1"><div class="ki">📅</div><div class="kl">4-yr grad rate</div><div class="kv" id="r4">32.1%</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)"><span class="tg up">▲ 0.8%</span><span>vs prior cohort</span></div><div class="ks">IPEDS GRS</div></div>
+    <div class="kc c2"><div class="ki">📅</div><div class="kl">5-yr grad rate</div><div class="kv" id="r5">41.8%</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)"><span class="tg up">▲ 1.0%</span><span>vs prior cohort</span></div><div class="ks">IPEDS GRS</div></div>
+    <div class="kc c3"><div class="ki">🎓</div><div class="kl">6-yr grad rate</div><div class="kv" id="r6">47.2%</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)"><span class="tg up">▲ 1.2%</span><span>vs prior cohort</span></div><div class="ks">IPEDS GRS</div></div>
+    <div class="kc c4"><div class="ki">🏛</div><div class="kl">Still enrolled (yr 6)</div><div class="kv" id="still">8.4%</div><div style="font-size:11px;color:var(--g400);margin-top:3px">May graduate beyond 6 yr</div><div class="ks">IPEDS OM</div></div>
+    <div class="kc c5"><div class="ki">⚠️</div><div class="kl">Left without degree</div><div class="kv" id="left">44.4%</div><div style="font-size:11px;color:var(--g400);margin-top:3px">Of entering cohort</div><div class="ks">IPEDS OM</div></div>
+  </div>
+
+  <div class="sl">Cohort waterfall — what happened to each entering class?</div>
+  <div class="g2">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Cohort outcome waterfall (2013–2018 entering classes)</div><div class="cs">Each bar = what happened to 100 students by year 6 · click segment for detail</div></div><div class="ctg">Waterfall</div></div>
+      <div class="cb">
+        <div class="wf-bars" id="wf-bars"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+          <div class="li"><div class="ld" style="background:#006633"></div>Graduated by yr 4</div>
+          <div class="li"><div class="ld" style="background:#0F6E56"></div>Yr 5</div>
+          <div class="li"><div class="ld" style="background:#00A85A"></div>Yr 6</div>
+          <div class="li"><div class="ld" style="background:#C8993A"></div>Still enrolled</div>
+          <div class="li"><div class="ld" style="background:#DC2626"></div>Left without degree</div>
+        </div>
+        <div id="wf-detail" style="margin-top:12px;padding:10px 14px;background:var(--g100);border-radius:8px;font-size:12px;color:var(--g600);display:none;line-height:1.5"></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Grad rate trend — all milestones</div><div class="cs">4-yr · 5-yr · 6-yr over time</div></div><div class="ctg teal">Multi-line</div></div>
+      <div class="cb">
+        <div id="grad-leg" class="leg" style="padding:0 0 8px"></div>
+        <div style="position:relative;width:100%;height:250px"><canvas id="gradLine" role="img" aria-label="Graduation rate trend at 4, 5, and 6 year milestones">Line chart showing improving graduation rates at all milestones.</canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Graduation rate by demographics &amp; peer comparison</div>
+  <div class="g22">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">6-yr grad rate by demographic group</div><div class="cs">Equity gap analysis · 2018 cohort</div></div><div class="ctg teal">Bar chart</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:280px"><canvas id="demoGrad" role="img" aria-label="Graduation rates by demographic group at CSU">Bar chart of 6-year graduation rates for different demographic groups.</canvas></div></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Ohio peer 6-yr graduation rate</div><div class="cs">CSU vs peer group comparison</div></div><div class="ctg gold">Peer comparison</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:280px"><canvas id="peerGrad" role="img" aria-label="6-year graduation rate peer comparison">CSU 47.2% vs Ohio peer group comparison.</canvas></div></div>
+    </div>
+  </div>
+</main>
+<footer>Data: <b>IPEDS GRS (Graduation Rates Survey)</b> · <b>IPEDS Outcome Measures</b> · <b>CSU Institutional Research</b> &nbsp;|&nbsp; Waterfall v1.0 · 2018 Entering Cohort</footer>
+<script>
+const TIP={backgroundColor:'#1F2937',titleColor:'#F9FAFB',bodyColor:'#D1D5DB',padding:10,cornerRadius:8,titleFont:{weight:'600',size:12},bodyFont:{size:11}};
+Chart.defaults.font={family:"'DM Sans',sans-serif",size:11.5};Chart.defaults.color='#6B7280';
+const CH={};function mk(id,cfg){if(CH[id])CH[id].destroy();CH[id]=new Chart(document.getElementById(id),cfg)}
+
+const COHORTS=[
+  {yr:'2013',r4:28.4,r5:37.2,r6:42.1,still:10.2,left:47.7},
+  {yr:'2014',r4:29.1,r5:38.0,r6:43.2,still:9.8,left:47.0},
+  {yr:'2015',r4:29.8,r5:38.8,r6:43.8,still:9.5,left:46.7},
+  {yr:'2016',r4:30.4,r5:39.5,r6:44.6,still:9.2,left:46.2},
+  {yr:'2017',r4:31.2,r5:40.6,r6:45.9,still:8.8,left:45.3},
+  {yr:'2018',r4:32.1,r5:41.8,r6:47.2,still:8.4,left:44.4},
+];
+
+function renderWaterfall(){
+  const wrap=document.getElementById('wf-bars');wrap.innerHTML='';
+  const notes={2013:'Most recent 8-yr data',2014:'',2015:'',2016:'',2017:'Partial 6-yr',2018:'Most recent'};
+  COHORTS.forEach(c=>{
+    const row=document.createElement('div');row.className='wf-row';
+    const yr5=c.r5-c.r4;const yr6=c.r6-c.r5;
+    row.innerHTML=`
+      <div class="wf-year">${c.yr}</div>
+      <div class="wf-track">
+        <div class="wf-seg" style="width:${c.r4}%;background:#006633;min-width:${c.r4>3?'auto':'0'}" title="Graduated yr 4: ${c.r4}%">${c.r4>6?c.r4.toFixed(1)+'%':''}</div>
+        <div class="wf-seg" style="width:${yr5}%;background:#0F6E56" title="Graduated yr 5: ${yr5.toFixed(1)}%">${yr5>4?yr5.toFixed(1)+'%':''}</div>
+        <div class="wf-seg" style="width:${yr6}%;background:#00A85A" title="Graduated yr 6: ${yr6.toFixed(1)}%">${yr6>4?yr6.toFixed(1)+'%':''}</div>
+        <div class="wf-seg" style="width:${c.still}%;background:#C8993A" title="Still enrolled: ${c.still}%">${c.still>4?c.still.toFixed(1)+'%':''}</div>
+        <div class="wf-seg" style="flex:1;background:#DC2626;opacity:.7" title="Left without degree: ${c.left}%">${c.left.toFixed(1)}%</div>
+      </div>
+      <div class="wf-note">${notes[c.yr]||''}</div>`;
+    row.querySelectorAll('.wf-seg').forEach((seg,i)=>{
+      seg.style.cursor='pointer';
+      const labels=['4-yr graduates','5-yr graduates','6-yr graduates','Still enrolled yr 6','Left without degree'];
+      const vals=[c.r4,yr5,yr6,c.still,c.left];
+      seg.addEventListener('click',()=>{const d=document.getElementById('wf-detail');d.style.display='block';d.innerHTML=`<strong style="color:var(--g800)">${c.yr} cohort — ${labels[i]}</strong>: ${vals[i].toFixed(1)}% of entering class. ${i===4?`Of the ${c.left.toFixed(0)}% who left, an estimated 11% stop-out and return later (IPEDS Outcome Measures).`:i===3?'Students still enrolled at year 6 may complete degrees within 8 years — this group is tracked via IPEDS OM 8-yr rate.':'Source: IPEDS GRS cohort tracking.'}`});
+    });
+    wrap.appendChild(row);
+  });
+}
+
+function renderGradLine(){
+  const cohortYrs=COHORTS.map(c=>c.yr);
+  const series=[
+    {l:'4-yr grad rate',d:COHORTS.map(c=>c.r4),c:'#185FA5',dash:[]},
+    {l:'5-yr grad rate',d:COHORTS.map(c=>c.r5),c:'#0F6E56',dash:[5,3]},
+    {l:'6-yr grad rate',d:COHORTS.map(c=>c.r6),c:'#006633',dash:[]},
+  ];
+  const legEl=document.getElementById('grad-leg');legEl.innerHTML='';
+  series.forEach(s=>legEl.insertAdjacentHTML('beforeend',`<div class="li"><div class="ld" style="background:${s.c}"></div>${s.l}</div>`));
+  mk('gradLine',{type:'line',data:{labels:cohortYrs,datasets:series.map(s=>({label:s.l,data:s.d,borderColor:s.c,backgroundColor:'transparent',borderWidth:2,borderDash:s.dash,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:s.c,tension:.3}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toFixed(1)}%`}}},scales:{y:{min:25,max:55,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},x:{grid:{display:false}}}}});
+}
+
+function renderDemoGrad(){
+  mk('demoGrad',{type:'bar',data:{labels:['International','Asian','White','Two or more','Hispanic/Latino','Black/African Am.','Pell-eligible','First-gen','Part-time'],datasets:[{label:'6-yr grad rate',data:[56.2,52.4,51.8,46.1,42.3,33.7,38.4,36.2,28.9],backgroundColor:['#0F6E56','#006633','#007A3D','#C8993A','#BA7517','#A32D2D','#185FA5','#534AB7','#DC2626'],borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` 6-yr grad rate: ${c.raw}%`}}},scales:{x:{min:20,max:65,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+
+function renderPeerGrad(){
+  const peers=['BGSU','Toledo','Akron','Cleveland St.','Wright St.','YSU'];
+  const vals=[55,51,50,47.2,42,39];
+  mk('peerGrad',{type:'bar',indexAxis:'y',data:{labels:peers,datasets:[{data:vals,backgroundColor:peers.map(p=>p==='Cleveland St.'?'#006633':'#B5D4F4'),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` 6-yr grad rate: ${c.raw.toFixed(1)}%`}}},scales:{x:{min:30,max:62,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+
+function apply(){renderWaterfall();renderGradLine();renderDemoGrad();renderPeerGrad()}
+apply();
+</script>
+</body>
+</html>

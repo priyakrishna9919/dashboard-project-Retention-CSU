@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CSU Equity & Retention Deep Dive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--g:#006633;--g2:#007A3D;--gold:#C8993A;--gold-lt:#F5E9CE;--bg:#EFF4F1;--card:#FFF;--g100:#F3F4F6;--g200:#E5E7EB;--g400:#9CA3AF;--g600:#4B5563;--g800:#1F2937;--red:#DC2626;--red-lt:#FEF2F2;--teal:#0F6E56;--purple:#534AB7;--r:12px;--sh:0 1px 4px rgba(0,0,0,.09);--sh2:0 4px 18px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--g800)}
+header{background:linear-gradient(135deg,#003d1f 0%,var(--g) 55%,var(--g2) 100%);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,60,30,.4)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;max-width:1600px;margin:0 auto;flex-wrap:wrap;gap:10px}
+.hb{display:flex;align-items:center;gap:13px}
+.hl{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.25)}
+.ht{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1.2}
+.hsb{font-size:10px;opacity:.7;letter-spacing:.7px;text-transform:uppercase;margin-top:2px}
+.hr{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.fs{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:7px 28px 7px 11px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.7)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
+.fs option{background:#004422;color:#fff}
+.badge{background:var(--gold);color:#fff;padding:4px 11px;border-radius:20px;font-size:10.5px;font-weight:600;text-transform:uppercase}
+.back-btn{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.back-btn:hover{background:rgba(255,255,255,.22)}
+main{max-width:1600px;margin:0 auto;padding:22px 28px 48px}
+.sl{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--purple);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--g200)}
+.insight-banner{background:linear-gradient(135deg,#2D1B6B,#3C3489);border-radius:var(--r);padding:16px 22px;margin-bottom:22px;display:flex;align-items:center;gap:16px}
+.insight-num{font-family:'DM Mono',monospace;font-size:42px;font-weight:500;color:#fff;line-height:1;flex-shrink:0}
+.insight-text{color:rgba(255,255,255,.9);font-size:13px;line-height:1.6}
+.insight-text strong{color:#fff}
+.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+@media(max-width:1000px){.kg{grid-template-columns:repeat(2,1fr)}}
+.kc{background:var(--card);border-radius:var(--r);padding:18px 20px 16px;box-shadow:var(--sh);border:1px solid var(--g200);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.kc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;background:var(--purple)}
+.kc.r::before{background:var(--red)}.kc.g::before{background:var(--g)}.kc.gold::before{background:var(--gold)}
+.ki{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px;background:#EEEDFE}
+.kc.r .ki{background:var(--red-lt)}.kc.g .ki{background:#E8F5EE}.kc.gold .ki{background:var(--gold-lt)}
+.kl{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+.kv{font-family:'DM Mono',monospace;font-size:27px;font-weight:500;color:var(--g800);line-height:1;margin-bottom:5px}
+.tg{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;padding:2px 6px;border-radius:20px}
+.tg.up{background:#DCFCE7;color:#16A34A}.tg.dn{background:var(--red-lt);color:var(--red)}.tg.fl{background:var(--g100);color:var(--g600)}
+.ks{position:absolute;bottom:8px;right:11px;font-size:9px;color:var(--g400);text-transform:uppercase}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1100px){.g2,.g3{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);overflow:hidden}
+.ch{padding:14px 18px 11px;border-bottom:1px solid var(--g100);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ct{font-size:13px;font-weight:600;color:var(--g800)}.cs{font-size:10.5px;color:var(--g400);margin-top:2px}
+.ctg{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:#EEEDFE;color:#3C3489;white-space:nowrap;flex-shrink:0}
+.ctg.g{background:#E8F5EE;color:var(--g)}.ctg.r{background:var(--red-lt);color:var(--red)}
+.cb{padding:14px 18px 18px}
+.leg{display:flex;flex-wrap:wrap;gap:9px;padding:0 18px 12px}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g600)}
+.ld{width:9px;height:9px;border-radius:2px}
+.ct-grid{display:grid;gap:1px;background:var(--g200);border-radius:8px;overflow:hidden;font-size:11.5px}
+.ct-header{background:var(--g800);color:#fff;padding:8px 12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.ct-cell{background:var(--card);padding:9px 12px;text-align:center}
+.ct-cell.label{text-align:left;font-weight:500;color:var(--g800);background:var(--g100)}
+.ct-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500}
+.heat-h{background:#006633;color:#fff}
+.heat-mh{background:#3D9970;color:#fff}
+.heat-m{background:#7BC67E;color:var(--g800)}
+.heat-ml{background:#E8F5EE;color:var(--g800)}
+.heat-l{background:#FEF2F2;color:var(--red)}
+footer{background:#003d1f;color:rgba(255,255,255,.5);text-align:center;padding:15px;font-size:11px}
+footer b{color:rgba(255,255,255,.85);font-weight:500}
+</style>
+</head>
+<body>
+<header>
+  <div class="hi">
+    <div class="hb">
+      <div class="hl">CSU</div>
+      <div><div class="ht">Equity &amp; Retention Deep Dive</div><div class="hsb">Cleveland State University · Root Cause Analysis</div></div>
+    </div>
+    <div class="hr">
+      <select class="fs" id="fy" onchange="apply()">
+        <option value="2024" selected>Fall 2024</option><option value="2023">Fall 2023</option>
+        <option value="all">All Years</option>
+      </select>
+      <select class="fs" id="fr" onchange="apply()">
+        <option value="all">All Demographics</option>
+        <option value="white">White</option>
+        <option value="black">Black/African Amer.</option>
+        <option value="hispanic">Hispanic/Latino</option>
+        <option value="asian">Asian</option>
+        <option value="intl">International</option>
+      </select>
+      <a href="../index.html" class="back-btn">← Portal Home</a>
+      <div class="badge">Equity Focus</div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="insight-banner">
+    <div class="insight-num">−12 pts</div>
+    <div class="insight-text"><strong>The retention equity gap between Black/African American and White students at CSU is 12 percentage points</strong> (63% vs 75%). This gap is larger when students are also Pell-eligible and first-generation. Cross-tabulating these three dimensions reveals the highest-risk student segment: Black/AA, Pell-eligible, first-generation students retain at an estimated 51%. This dashboard makes that intersection visible and actionable.</div>
+  </div>
+
+  <div class="sl">Equity gap KPIs</div>
+  <div class="kg">
+    <div class="kc r"><div class="ki">⚠️</div><div class="kl">Largest race gap</div><div class="kv">−12 pts</div><div style="font-size:11px;color:var(--g400);margin-top:3px">Black/AA vs White</div><div class="ks">IPEDS EF</div></div>
+    <div class="kc"><div class="ki">📊</div><div class="kl">Pell gap</div><div class="kv">−14 pts</div><div style="font-size:11px;color:var(--g400);margin-top:3px">Pell vs non-Pell</div><div class="ks">IPEDS EF</div></div>
+    <div class="kc"><div class="ki">📋</div><div class="kl">First-gen gap</div><div class="kv">−10 pts</div><div style="font-size:11px;color:var(--g400);margin-top:3px">First-gen vs cont.-gen</div><div class="ks">IPEDS EF</div></div>
+    <div class="kc gold"><div class="ki">🎯</div><div class="kl">Highest-risk segment</div><div class="kv">51%</div><div style="font-size:11px;color:var(--g400);margin-top:3px">Black/AA + Pell + First-gen</div><div class="ks">Modeled est.</div></div>
+  </div>
+
+  <div class="sl">Cross-tabulation — retention by race × Pell × first-gen</div>
+  <div class="cc" style="margin-bottom:14px">
+    <div class="ch"><div><div class="ct">Retention rate heat map — three-way cross-tab</div><div class="cs">Green = stronger retention · Red = equity gap · Click cell for intervention recommendations</div></div><div class="ctg">Heat map</div></div>
+    <div class="cb" id="crosstab"></div>
+  </div>
+
+  <div class="sl">Retention by individual dimension + root cause signals</div>
+  <div class="g3">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention by race/ethnicity</div><div class="cs">With 10-yr trend toggle</div></div><div class="ctg">Bar chart</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:260px"><canvas id="raceChart" role="img" aria-label="Retention by race ethnicity">Horizontal bar chart of retention rates.</canvas></div></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention: financial factors</div><div class="cs">Pell · non-Pell · aid gap impact</div></div><div class="ctg">Grouped bar</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:260px"><canvas id="finChart" role="img" aria-label="Retention by financial aid status">Grouped bar showing Pell vs non-Pell retention.</canvas></div></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Root cause signal index</div><div class="cs">Estimated contribution to gap</div></div><div class="ctg r">Gap drivers</div></div>
+      <div class="cb" id="root-cause"></div>
+    </div>
+  </div>
+
+  <div class="sl">10-year equity gap trend + intervention recommendations</div>
+  <div class="g2">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention gap trend — Black/AA vs White (2015–2024)</div><div class="cs">Is the equity gap narrowing?</div></div><div class="ctg g">Trend</div></div>
+      <div class="cb">
+        <div id="gap-leg" class="leg" style="padding:0 0 8px"></div>
+        <div style="position:relative;width:100%;height:230px"><canvas id="gapTrend" role="img" aria-label="Retention equity gap trend 2015 to 2024">Line chart showing retention gap between Black/AA and White students over time.</canvas></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Recommended interventions by risk segment</div><div class="cs">Evidence-based programs · cost-impact ranking</div></div><div class="ctg">Recommendations</div></div>
+      <div class="cb" id="interventions"></div>
+    </div>
+  </div>
+</main>
+<footer>Data: <b>IPEDS EF Disaggregated Survey</b> · <b>IPEDS Outcome Measures</b> · <b>CSU Common Data Set</b> · <b>Ed research literature</b> &nbsp;|&nbsp; Equity Dashboard v1.0 · Fall 2024</footer>
+<script>
+const TIP={backgroundColor:'#1F2937',titleColor:'#F9FAFB',bodyColor:'#D1D5DB',padding:10,cornerRadius:8,titleFont:{weight:'600',size:12},bodyFont:{size:11}};
+Chart.defaults.font={family:"'DM Sans',sans-serif",size:11.5};Chart.defaults.color='#6B7280';
+const CH={};function mk(id,cfg){if(CH[id])CH[id].destroy();CH[id]=new Chart(document.getElementById(id),cfg)}
+
+function heatClass(v){if(v>=75)return'heat-h';if(v>=70)return'heat-mh';if(v>=65)return'heat-m';if(v>=60)return'heat-ml';return'heat-l'}
+
+function renderCrosstab(){
+  const groups=['White','Hispanic/Latino','Black/African Am.','Asian','International'];
+  const data={
+    'White':           {pellFG:61,pellCG:68,noPellFG:72,noPellCG:79},
+    'Hispanic/Latino': {pellFG:57,pellCG:64,noPellFG:68,noPellCG:74},
+    'Black/African Am.':{pellFG:51,pellCG:59,noPellFG:62,noPellCG:70},
+    'Asian':           {pellFG:64,pellCG:71,noPellFG:75,noPellCG:82},
+    'International':   {pellFG:72,pellCG:76,noPellFG:78,noPellCG:84},
+  };
+  const intv={
+    pellFG:'TRIO Student Support Services · Summer bridge · Emergency fund + dedicated advisor caseload reduction',
+    pellCG:'Financial literacy coaching · Need-based retention grants · Early alert system',
+    noPellFG:'First-gen mentoring program · Faculty-student connection events · Advising frequency',
+    noPellCG:'Standard advising · Academic engagement programs',
+  };
+  let html=`<div class="ct-grid" style="grid-template-columns:180px 1fr 1fr 1fr 1fr">
+    <div class="ct-header"></div>
+    <div class="ct-header" style="text-align:center">Pell + First-gen</div>
+    <div class="ct-header" style="text-align:center">Pell + Cont.-gen</div>
+    <div class="ct-header" style="text-align:center">Non-Pell + First-gen</div>
+    <div class="ct-header" style="text-align:center">Non-Pell + Cont.-gen</div>`;
+  groups.forEach(g=>{
+    const d=data[g];
+    ['pellFG','pellCG','noPellFG','noPellCG'].forEach((k,i)=>{
+      if(i===0)html+=`<div class="ct-cell label">${g}</div>`;
+      html+=`<div class="ct-cell ${heatClass(d[k])}" style="cursor:pointer" onclick="showIntv('${g}','${k}','${d[k]}%')"><div class="ct-val">${d[k]}%</div></div>`;
+    });
+  });
+  html+='</div>';
+  html+=`<div id="intv-detail" style="margin-top:12px;padding:10px 14px;background:var(--g100);border-radius:8px;font-size:12px;color:var(--g600);display:none;line-height:1.5"></div>`;
+  document.getElementById('crosstab').innerHTML=html;
+  window.showIntv=(g,k,v)=>{const lbl={'pellFG':'Pell-eligible + First-generation','pellCG':'Pell-eligible + Continuing-generation','noPellFG':'Non-Pell + First-generation','noPellCG':'Non-Pell + Continuing-generation'};const el=document.getElementById('intv-detail');el.style.display='block';el.innerHTML=`<strong style="color:var(--g800)">${g} · ${lbl[k]}</strong>: retention rate <strong>${v}</strong><br><span style="color:var(--g600)"><strong>Recommended:</strong> ${intv[k]}</span>`};
+}
+
+function renderRace(){
+  mk('raceChart',{type:'bar',indexAxis:'y',data:{labels:['International','Asian','White','Hispanic/Latino','Two or more','Black/African Am.'],datasets:[{label:'Retention %',data:[81,78,75,71,69,63],backgroundColor:['#0F6E56','#006633','#007A3D','#C8993A','#BA7517','#A32D2D'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` Retention: ${c.raw}%`}}},scales:{x:{min:50,max:90,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+
+function renderFin(){
+  mk('finChart',{type:'bar',data:{labels:['Non-Pell','Pell-eligible'],datasets:[{label:'First-gen',data:[76,62],backgroundColor:'#534AB7',borderRadius:4,borderSkipped:false},{label:'Cont.-gen',data:[80,70],backgroundColor:'#9CA3AF',borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11}}},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}},scales:{x:{grid:{display:false}},y:{min:50,max:90,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}}}}});
+}
+
+function renderRootCause(){
+  const factors=[
+    {f:'Financial stress / unmet need',pct:38,c:'#A32D2D'},
+    {f:'Part-time enrollment',pct:28,c:'#DC2626'},
+    {f:'Academic preparation gap',pct:18,c:'#C8993A'},
+    {f:'First-gen navigation challenges',pct:10,c:'#854F0B'},
+    {f:'Sense of belonging / campus climate',pct:6,c:'#534AB7'},
+  ];
+  document.getElementById('root-cause').innerHTML=`<div style="font-size:10px;color:var(--g400);margin-bottom:10px">Estimated % contribution to Black/AA retention gap · Based on IPEDS disaggregated analysis &amp; ed. research literature</div>`+factors.map(f=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="flex:1"><div style="font-size:11.5px;color:var(--g800);margin-bottom:3px">${f.f}</div><div style="background:var(--g100);border-radius:3px;height:8px;overflow:hidden"><div style="width:${f.pct}%;height:100%;background:${f.c};border-radius:3px;transition:width .6s ease"></div></div></div><div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--g800);min-width:32px;text-align:right">${f.pct}%</div></div>`).join('');
+}
+
+function renderGapTrend(){
+  const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+  const white=[75.2,75.1,74.9,74.8,74.5,74.3,74.1,74.2,74.1,75.0];
+  const black=[61.8,62.0,62.2,62.4,62.5,62.6,62.7,62.8,62.7,63.0];
+  const gap=white.map((w,i)=>(w-black[i]).toFixed(1));
+  const series=[
+    {l:'White retention',d:white,c:'#006633',dash:[]},
+    {l:'Black/AA retention',d:black,c:'#DC2626',dash:[]},
+    {l:'Gap (pts)',d:gap,c:'#C8993A',dash:[5,3]},
+  ];
+  const legEl=document.getElementById('gap-leg');legEl.innerHTML='';
+  series.forEach(s=>legEl.insertAdjacentHTML('beforeend',`<div class="li"><div class="ld" style="background:${s.c}"></div>${s.l}</div>`));
+  mk('gapTrend',{type:'line',data:{labels:yrs,datasets:series.map((s,i)=>({label:s.l,data:s.d,borderColor:s.c,backgroundColor:'transparent',borderWidth:i===2?1.5:2,borderDash:s.dash,pointRadius:3,pointHoverRadius:5,pointBackgroundColor:s.c,tension:.3,yAxisID:i===2?'y2':'y'}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}${c.datasetIndex===2?' pts':'%'}`}}},scales:{y:{min:58,max:80,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'},position:'left'},y2:{min:8,max:20,ticks:{callback:v=>v+' pts'},grid:{display:false},position:'right'},x:{grid:{display:false}}}}});
+}
+
+function renderInterventions(){
+  const items=[
+    {seg:'Black/AA + Pell + First-gen',ret:'51%',prog:'TRIO SSS · Summer bridge · Emergency grants',impact:'High',cost:'$$$'},
+    {seg:'Part-time students (all)',ret:'55%',prog:'Evening advising · Stop-out re-entry · Flexible aid',impact:'High',cost:'$$'},
+    {seg:'First-gen (any race)',ret:'66%',prog:'First-gen mentoring · Faculty matching · Peer coaching',impact:'Medium',cost:'$'},
+    {seg:'Pell-eligible (non-first-gen)',ret:'70%',prog:'Need-based retention grants · Financial literacy',impact:'Medium',cost:'$$'},
+  ];
+  document.getElementById('interventions').innerHTML=items.map(it=>`<div style="padding:10px 0;border-bottom:1px solid var(--g100)"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px"><div style="font-size:12px;font-weight:600;color:var(--g800)">${it.seg}</div><div style="display:flex;gap:4px"><span style="background:#EEEDFE;color:#3C3489;font-size:9.5px;padding:2px 6px;border-radius:20px;font-weight:600">${it.ret}</span><span style="background:var(--g100);color:var(--g600);font-size:9.5px;padding:2px 6px;border-radius:20px">${it.cost}</span></div></div><div style="font-size:11px;color:var(--g600)">${it.prog}</div></div>`).join('')+'<div style="font-size:9.5px;color:var(--g400);margin-top:10px">Cost: $ = &lt;$50K · $$ = $50-200K · $$$ = $200K+ · Impact based on ed. research meta-analysis</div>';
+}
+
+function apply(){renderCrosstab();renderRace();renderFin();renderRootCause();renderGapTrend();renderInterventions()}
+apply();
+</script>
+</body>
+</html>

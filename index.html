@@ -265,32 +265,34 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:28px 32px;text
       </div>
     </a>
 
-    <!-- DASHBOARD 3: GEOGRAPHIC (COMING SOON) -->
-    <div class="dash-card coming-soon" data-tags="geographic map county ohio international">
-      <div class="dash-banner geo"></div>
+    <!-- DASHBOARD 3: BOARD SUMMARY -->
+    <a href="dashboards/board-summary.html" class="dash-card" data-tags="board summary print trustees kpi executive">
+      <div class="dash-banner" style="background:linear-gradient(90deg,#1F2937,#4B5563)"></div>
       <div class="dash-body">
         <div class="dash-header">
-          <div class="dash-icon geo">🗺️</div>
-          <div class="dash-status soon">Coming Soon</div>
+          <div class="dash-icon" style="background:#F3F4F6">📋</div>
+          <div class="dash-status live">Live</div>
         </div>
-        <div class="dash-name">Geographic Analysis</div>
-        <div class="dash-desc">Interactive US choropleth and Ohio county map showing where CSU students come from. Includes state-by-state enrollment ranking, Cuyahoga County dominance analysis (62%), international student origin countries, and 10-year geographic trend lines.</div>
+        <div class="dash-name">Board of Trustees Summary</div>
+        <div class="dash-desc">Single-page executive summary designed for the Board of Trustees. Five headline KPIs at large typography, 10-year sparklines, enrollment composition bars, and a narrative section. Print-ready — click the print button to export as a PDF one-pager.</div>
         <div class="dash-kpis">
-          <span class="dash-kpi blue">Ohio: 91.2%</span>
-          <span class="dash-kpi blue">OOS: 3.6%</span>
-          <span class="dash-kpi blue">Intl: 7.9%</span>
-          <span class="dash-kpi blue">Top: Cuyahoga 62%</span>
+          <span class="dash-kpi gray">5 KPIs</span>
+          <span class="dash-kpi gray">Print-ready</span>
+          <span class="dash-kpi gray">PDF export</span>
+          <span class="dash-kpi gray">No filters</span>
         </div>
         <div class="dash-footer">
           <div class="dash-charts">
-            <span class="dash-chart-tag">4 KPI Cards</span>
-            <span class="dash-chart-tag">US Map</span>
-            <span class="dash-chart-tag">County Map</span>
+            <span class="dash-chart-tag">Board-level</span>
+            <span class="dash-chart-tag">2 Sparklines</span>
+            <span class="dash-chart-tag">Narrative</span>
           </div>
-          <div class="dash-cta disabled">In development <span class="dash-arrow">→</span></div>
+          <div class="dash-cta">Open dashboard <span class="dash-arrow">→</span></div>
         </div>
       </div>
-    </div>
+    </a>
+
+    <!-- DASHBOARD 4 moved: PIPELINE already live -->
 
     <!-- DASHBOARD 4: PIPELINE (COMING SOON) -->
     <a href="dashboards/pipeline.html" class="dash-card" data-tags="pipeline funnel freshmen transfer graduate entrants">
@@ -319,55 +321,83 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:28px 32px;text
       </div>
     </a>
 
-    <!-- DASHBOARD 5: FINANCIAL AID (PLANNED) -->
-    <div class="dash-card coming-soon" data-tags="financial aid pell grants scholarships">
-      <div class="dash-banner coming"></div>
+    <!-- DASHBOARD 5: GRADUATE PROGRAMS -->
+    <a href="dashboards/graduate-programs.html" class="dash-card" data-tags="graduate programs masters doctoral MBA engineering enrollment decline">
+      <div class="dash-banner" style="background:linear-gradient(90deg,#0F6E56,#1D9E75)"></div>
       <div class="dash-body">
         <div class="dash-header">
-          <div class="dash-icon coming">💰</div>
-          <div class="dash-status soon">Planned</div>
+          <div class="dash-icon" style="background:#E1F5EE">🏛</div>
+          <div class="dash-status live">Live</div>
         </div>
-        <div class="dash-name">Financial Aid &amp; Affordability</div>
-        <div class="dash-desc">Pell Grant eligibility rates, average net price by income bracket, institutional aid distribution, and financial need vs aid gaps. Sourced from IPEDS Student Financial Aid and College Scorecard public data. Includes cohort-level financial aid impact on retention.</div>
+        <div class="dash-name">Graduate Program Enrollment</div>
+        <div class="dash-desc">Program-level breakdown of all CSU graduate enrollment. Searchable, sortable table of 15+ programs with YoY trend badges and mini sparklines. Identifies declining programs (MBA −8.8%, MS Engineering −8.2%) vs growing ones (MS Data Science +10.1%, MPA +6.9%). Includes Ohio peer comparison.</div>
         <div class="dash-kpis">
-          <span class="dash-kpi gray">Pell eligible</span>
-          <span class="dash-kpi gray">Net price</span>
-          <span class="dash-kpi gray">Aid gaps</span>
+          <span class="dash-kpi teal">Total grad: 3,760</span>
+          <span class="dash-kpi teal">▼ 5.0% YoY</span>
+          <span class="dash-kpi teal">Alerts: 5 programs</span>
         </div>
         <div class="dash-footer">
           <div class="dash-charts">
-            <span class="dash-chart-tag">IPEDS SFA</span>
-            <span class="dash-chart-tag">Scorecard</span>
+            <span class="dash-chart-tag">4 KPIs</span>
+            <span class="dash-chart-tag">Program Table</span>
+            <span class="dash-chart-tag">Peer Chart</span>
           </div>
-          <div class="dash-cta disabled">Planned <span class="dash-arrow">→</span></div>
+          <div class="dash-cta">Open dashboard <span class="dash-arrow">→</span></div>
         </div>
       </div>
-    </div>
+    </a>
 
-    <!-- DASHBOARD 6: ACADEMIC OUTCOMES (PLANNED) -->
-    <div class="dash-card coming-soon" data-tags="academic outcomes gpa degrees awarded">
-      <div class="dash-banner coming"></div>
+    <!-- DASHBOARD 6: GRADUATION WATERFALL -->
+    <a href="dashboards/graduation-waterfall.html" class="dash-card" data-tags="graduation waterfall cohort 4-year 6-year completion milestone">
+      <div class="dash-banner" style="background:linear-gradient(90deg,#185FA5,#378ADD)"></div>
       <div class="dash-body">
         <div class="dash-header">
-          <div class="dash-icon coming">📚</div>
-          <div class="dash-status soon">Planned</div>
+          <div class="dash-icon" style="background:#E6F1FB">🎓</div>
+          <div class="dash-status live">Live</div>
         </div>
-        <div class="dash-name">Academic Outcomes &amp; Degrees</div>
-        <div class="dash-desc">Degrees awarded by college, level, and field of study. CIP code breakdown, time-to-degree trends, and completions by demographics. Sourced from IPEDS Completions survey and CSU Book of Trends. Answers: which programs produce the most graduates?</div>
+        <div class="dash-name">Graduation Rate Waterfall</div>
+        <div class="dash-desc">Shows exactly what happened to each entering cohort at 4-year, 5-year, and 6-year checkpoints. Clickable waterfall bars reveal data source notes. Answers the Provost's question: are students graduating in 4 years or 7? Includes demographic breakdown and Ohio peer comparison.</div>
         <div class="dash-kpis">
-          <span class="dash-kpi gray">Degrees awarded</span>
-          <span class="dash-kpi gray">Time-to-degree</span>
-          <span class="dash-kpi gray">By college</span>
+          <span class="dash-kpi blue">4-yr: 32.1%</span>
+          <span class="dash-kpi blue">5-yr: 41.8%</span>
+          <span class="dash-kpi blue">6-yr: 47.2%</span>
         </div>
         <div class="dash-footer">
           <div class="dash-charts">
-            <span class="dash-chart-tag">IPEDS C</span>
-            <span class="dash-chart-tag">Book of Trends</span>
+            <span class="dash-chart-tag">5 KPIs</span>
+            <span class="dash-chart-tag">Waterfall</span>
+            <span class="dash-chart-tag">Cohort lines</span>
           </div>
-          <div class="dash-cta disabled">Planned <span class="dash-arrow">→</span></div>
+          <div class="dash-cta">Open dashboard <span class="dash-arrow">→</span></div>
         </div>
       </div>
-    </div>
+    </a>
+
+    <!-- DASHBOARD 7: EQUITY DRILL -->
+    <a href="dashboards/equity-drill.html" class="dash-card" data-tags="equity retention race pell first-gen demographic gap black hispanic">
+      <div class="dash-banner" style="background:linear-gradient(90deg,#3C3489,#534AB7)"></div>
+      <div class="dash-body">
+        <div class="dash-header">
+          <div class="dash-icon" style="background:#EEEDFE">🎯</div>
+          <div class="dash-status live">Live</div>
+        </div>
+        <div class="dash-name">Equity &amp; Retention Deep Dive</div>
+        <div class="dash-desc">Root-cause analysis of the 12-point retention gap between Black/AA and White students. Interactive heat map cross-tabulates race × Pell-eligibility × first-generation status — revealing the highest-risk segment (51% retention) and recommending specific evidence-based interventions for each cell.</div>
+        <div class="dash-kpis">
+          <span class="dash-kpi" style="background:#EEEDFE;color:#3C3489">Gap: −12 pts</span>
+          <span class="dash-kpi" style="background:#EEEDFE;color:#3C3489">Pell gap: −14 pts</span>
+          <span class="dash-kpi" style="background:#EEEDFE;color:#3C3489">3-way cross-tab</span>
+        </div>
+        <div class="dash-footer">
+          <div class="dash-charts">
+            <span class="dash-chart-tag">Heat map</span>
+            <span class="dash-chart-tag">Gap trend</span>
+            <span class="dash-chart-tag">Interventions</span>
+          </div>
+          <div class="dash-cta">Open dashboard <span class="dash-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
 
   </div>
 

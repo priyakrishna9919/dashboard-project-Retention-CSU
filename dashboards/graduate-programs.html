@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CSU Graduate Program Enrollment Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--g:#006633;--g2:#007A3D;--gold:#C8993A;--gold-lt:#F5E9CE;--bg:#EFF4F1;--card:#FFF;--g100:#F3F4F6;--g200:#E5E7EB;--g400:#9CA3AF;--g600:#4B5563;--g800:#1F2937;--red:#DC2626;--red-lt:#FEF2F2;--teal:#0F6E56;--r:12px;--sh:0 1px 4px rgba(0,0,0,.09);--sh2:0 4px 18px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--g800)}
+header{background:linear-gradient(135deg,#003d1f 0%,var(--g) 55%,var(--g2) 100%);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,60,30,.4)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;max-width:1600px;margin:0 auto;flex-wrap:wrap;gap:10px}
+.hb{display:flex;align-items:center;gap:13px}
+.hl{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.25)}
+.ht{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1.2}
+.hsb{font-size:10px;opacity:.7;letter-spacing:.7px;text-transform:uppercase;margin-top:2px}
+.hr{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.fs{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:7px 28px 7px 11px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.7)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
+.fs option{background:#004422;color:#fff}
+.badge{background:var(--gold);color:#fff;padding:4px 11px;border-radius:20px;font-size:10.5px;font-weight:600;text-transform:uppercase}
+.back-btn{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.back-btn:hover{background:rgba(255,255,255,.22)}
+main{max-width:1600px;margin:0 auto;padding:22px 28px 48px}
+.sl{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--teal);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--g200)}
+.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+@media(max-width:1000px){.kg{grid-template-columns:repeat(2,1fr)}}
+.kc{background:var(--card);border-radius:var(--r);padding:18px 20px 16px;box-shadow:var(--sh);border:1px solid var(--g200);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s;animation:fu .4s ease both}
+.kc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;background:var(--teal)}
+.kc.g::before{background:var(--g)}.kc.r::before{background:var(--red)}.kc.gold::before{background:var(--gold)}
+.ki{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px;background:#E1F5EE}
+.kc.r .ki{background:var(--red-lt)}.kc.gold .ki{background:var(--gold-lt)}.kc.g .ki{background:#E8F5EE}
+.kl{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+.kv{font-family:'DM Mono',monospace;font-size:27px;font-weight:500;color:var(--g800);line-height:1;margin-bottom:5px}
+.tg{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;padding:2px 6px;border-radius:20px}
+.tg.up{background:#DCFCE7;color:#16A34A}.tg.dn{background:var(--red-lt);color:var(--red)}.tg.fl{background:var(--g100);color:var(--g600)}
+.ks{position:absolute;bottom:8px;right:11px;font-size:9px;color:var(--g400);text-transform:uppercase}
+.g2{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
+.g22{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1100px){.g2,.g22,.g3{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);overflow:hidden}
+.ch{padding:14px 18px 11px;border-bottom:1px solid var(--g100);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ct{font-size:13px;font-weight:600;color:var(--g800)}.cs{font-size:10.5px;color:var(--g400);margin-top:2px}
+.ctg{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:#E1F5EE;color:var(--teal);white-space:nowrap;flex-shrink:0}
+.ctg.gold{background:var(--gold-lt);color:#854F0B}.ctg.g{background:#E8F5EE;color:var(--g)}
+.cb{padding:14px 18px 18px}
+.leg{display:flex;flex-wrap:wrap;gap:9px;padding:0 18px 12px}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g600)}
+.ld{width:9px;height:9px;border-radius:2px}
+.prog-table{width:100%;border-collapse:collapse;font-size:12px}
+.prog-table th{text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--g400);padding:0 8px 8px 0;border-bottom:1px solid var(--g200)}
+.prog-table td{padding:8px 8px 8px 0;border-bottom:1px solid var(--g100);vertical-align:middle}
+.prog-table tr:last-child td{border-bottom:none}
+.prog-table tr:hover td{background:var(--g100)}
+.trend-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 6px;border-radius:20px}
+.tp-up{background:#DCFCE7;color:#16A34A}.tp-dn{background:var(--red-lt);color:var(--red)}.tp-fl{background:var(--g100);color:var(--g600)}
+.search-input{width:100%;border:1px solid var(--g200);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--g800);background:var(--card);margin-bottom:14px;outline:none}
+.search-input:focus{border-color:var(--g)}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filter-btn{padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:500;cursor:pointer;border:1px solid var(--g200);background:var(--card);color:var(--g600);transition:.15s}
+.filter-btn.active,.filter-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+footer{background:#003d1f;color:rgba(255,255,255,.5);text-align:center;padding:15px;font-size:11px}
+footer b{color:rgba(255,255,255,.85);font-weight:500}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.kc:nth-child(1){animation-delay:.04s}.kc:nth-child(2){animation-delay:.08s}.kc:nth-child(3){animation-delay:.12s}.kc:nth-child(4){animation-delay:.16s}
+</style>
+</head>
+<body>
+<header>
+  <div class="hi">
+    <div class="hb">
+      <div class="hl">CSU</div>
+      <div><div class="ht">Graduate Program Enrollment</div><div class="hsb">Cleveland State University · Program-Level Analysis</div></div>
+    </div>
+    <div class="hr">
+      <select class="fs" id="fy" onchange="apply()">
+        <option value="2024" selected>Fall 2024</option><option value="2023">Fall 2023</option>
+        <option value="2022">Fall 2022</option><option value="all">All Years</option>
+      </select>
+      <select class="fs" id="fc" onchange="apply()">
+        <option value="all">All Colleges</option>
+        <option value="bus">Business (MBSC)</option>
+        <option value="eng">Engineering</option>
+        <option value="art">Arts &amp; Sciences</option>
+        <option value="edu">Education</option>
+        <option value="nur">Nursing</option>
+        <option value="law">Law (JD/LLM)</option>
+        <option value="urban">Urban Affairs</option>
+      </select>
+      <select class="fs" id="ft" onchange="apply()">
+        <option value="all">All Program Types</option>
+        <option value="ma">Masters</option>
+        <option value="phd">Doctoral</option>
+        <option value="cert">Certificate</option>
+        <option value="prof">Professional</option>
+      </select>
+      <a href="../index.html" class="back-btn">← Portal Home</a>
+      <div class="badge" id="bdg">Fall 2024</div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="sl">Graduate enrollment KPIs — Fall 2024</div>
+  <div class="kg">
+    <div class="kc"><div class="ki">🏛</div><div class="kl">Total grad enrollment</div><div class="kv" id="kv-total">3,760</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)"><span class="tg dn">▼ 5.0%</span><span>vs Fall 2023</span></div><div class="ks">IPEDS EF</div></div>
+    <div class="kc r"><div class="ki">📉</div><div class="kl">Largest decline</div><div class="kv" style="font-size:20px;line-height:1.3">MBA / MS Eng.</div><div style="font-size:11px;color:var(--g400);margin-top:3px">Both down &gt;8% YoY</div><div class="ks">CDS / IPEDS</div></div>
+    <div class="kc gold"><div class="ki">📈</div><div class="kl">Fastest growing</div><div class="kv" style="font-size:20px;line-height:1.3">MSN / MPA</div><div style="font-size:11px;color:var(--g400);margin-top:3px">Nursing +12%, MPA +7%</div><div class="ks">CDS / IPEDS</div></div>
+    <div class="kc g"><div class="ki">🌐</div><div class="kl">Intl grad students</div><div class="kv">1,120</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)"><span class="tg up">▲ 3.2%</span><span>recovery</span></div><div class="ks">CDS Section B</div></div>
+  </div>
+
+  <div class="sl">Program enrollment &amp; trend analysis</div>
+  <div class="g2">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Graduate enrollment by program</div><div class="cs">Searchable · filterable · click column header to sort</div></div><div class="ctg">Program table</div></div>
+      <div class="cb">
+        <input class="search-input" type="text" id="prog-search" placeholder="Search programs — try 'MBA', 'Engineering', 'Nursing'…" oninput="filterTable(this.value)"/>
+        <div class="filter-row" id="type-filters">
+          <button class="filter-btn active" onclick="setTypeFilter('all',this)">All</button>
+          <button class="filter-btn" onclick="setTypeFilter('ma',this)">Masters</button>
+          <button class="filter-btn" onclick="setTypeFilter('phd',this)">Doctoral</button>
+          <button class="filter-btn" onclick="setTypeFilter('cert',this)">Certificate</button>
+          <button class="filter-btn" onclick="setTypeFilter('prof',this)">Professional</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="prog-table" id="prog-table">
+            <thead><tr>
+              <th onclick="sortTable('prog')" style="cursor:pointer">Program ↕</th>
+              <th>College</th>
+              <th>Type</th>
+              <th onclick="sortTable('enroll')" style="cursor:pointer">Enrollment ↕</th>
+              <th onclick="sortTable('yoy')" style="cursor:pointer">YoY ↕</th>
+              <th>3-yr trend</th>
+            </tr></thead>
+            <tbody id="prog-tbody"></tbody>
+          </table>
+        </div>
+        <div style="font-size:10.5px;color:var(--g400);margin-top:10px" id="table-count"></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Grad enrollment by college</div><div class="cs">Fall 2024 headcount</div></div><div class="ctg gold">Bar chart</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:260px"><canvas id="collegeChart" role="img" aria-label="Graduate enrollment by college at CSU Fall 2024">Horizontal bar chart of graduate enrollment by college.</canvas></div></div>
+    </div>
+  </div>
+
+  <div class="sl">Trends &amp; peer comparison</div>
+  <div class="g22">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Graduate enrollment trend (2019–2024)</div><div class="cs">Top 5 programs by size · 6-year view</div></div><div class="ctg">Multi-line</div></div>
+      <div class="cb">
+        <div id="trend-leg" class="leg" style="padding:0 0 8px"></div>
+        <div style="position:relative;width:100%;height:230px"><canvas id="trendChart" role="img" aria-label="Graduate enrollment trend for top programs 2019-2024">Line chart showing trends for top graduate programs.</canvas></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Grad enrollment — Ohio peer comparison</div><div class="cs">Graduate headcount · CSU vs peers</div></div><div class="ctg g">Comparison</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:270px"><canvas id="peerChart" role="img" aria-label="Graduate enrollment peer comparison among Ohio universities">CSU graduate enrollment vs Toledo, Akron, YSU, Wright State, and BGSU.</canvas></div></div>
+      <div class="leg">
+        <div class="li"><div class="ld" style="background:#0F6E56"></div>Cleveland State (highlighted)</div>
+        <div class="li"><div class="ld" style="background:#B5D4F4"></div>Ohio peers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Declining programs — action required</div>
+  <div class="cc">
+    <div class="ch"><div><div class="ct">Programs with significant YoY decline (≥5%)</div><div class="cs">Requires strategic review · data from IPEDS &amp; CDS</div></div><div class="ctg" style="background:var(--red-lt);color:var(--red)">Alert</div></div>
+    <div class="cb" id="alert-table"></div>
+  </div>
+</main>
+<footer>Data: <b>IPEDS EF Survey</b> · <b>CSU Common Data Set</b> · <b>CSU Academic Program Catalog</b> · <b>Ohio DHE</b> &nbsp;|&nbsp; Graduate Programs v1.0 · Fall 2024</footer>
+<script>
+const TIP={backgroundColor:'#1F2937',titleColor:'#F9FAFB',bodyColor:'#D1D5DB',padding:10,cornerRadius:8,titleFont:{weight:'600',size:12},bodyFont:{size:11}};
+Chart.defaults.font={family:"'DM Sans',sans-serif",size:11.5};Chart.defaults.color='#6B7280';
+const CH={};
+function mk(id,cfg){if(CH[id])CH[id].destroy();CH[id]=new Chart(document.getElementById(id),cfg)}
+
+const PROGRAMS=[
+  {prog:'Master of Business Admin.',college:'Business',type:'ma',col:'bus',e24:520,e23:572,e22:610,e21:640,e20:660,e19:680},
+  {prog:'MS Engineering',college:'Engineering',type:'ma',col:'eng',e24:480,e23:523,e22:550,e21:570,e20:580,e19:600},
+  {prog:'Master of Public Admin.',college:'Urban Affairs',type:'ma',col:'urban',e24:310,e23:290,e22:275,e21:260,e20:255,e19:248},
+  {prog:'MSN Nursing',college:'Nursing',type:'ma',col:'nur',e24:290,e23:259,e22:240,e21:228,e20:220,e19:210},
+  {prog:'MS Computer Science',college:'Engineering',type:'ma',col:'eng',e24:268,e23:275,e22:280,e21:270,e20:255,e19:240},
+  {prog:'Juris Doctor (JD)',college:'Law',type:'prof',col:'law',e24:390,e23:400,e22:415,e21:420,e20:425,e19:430},
+  {prog:'Master of Education',college:'Education',type:'ma',col:'edu',e24:240,e23:252,e22:258,e21:262,e20:265,e19:270},
+  {prog:'PhD Clinical Psychology',college:'Arts & Sciences',type:'phd',col:'art',e24:98,e23:102,e22:105,e21:108,e20:110,e19:112},
+  {prog:'MS Data Science',college:'Business',type:'ma',col:'bus',e24:185,e23:168,e22:140,e21:110,e20:82,e19:55},
+  {prog:'MS Public Health',college:'Arts & Sciences',type:'ma',col:'art',e24:142,e23:148,e22:152,e21:156,e20:158,e19:155},
+  {prog:'LLM (Law)',college:'Law',type:'prof',col:'law',e24:130,e23:138,e22:142,e21:145,e20:148,e19:150},
+  {prog:'MS Electrical Eng.',college:'Engineering',type:'ma',col:'eng',e24:112,e23:118,e22:125,e21:130,e20:132,e19:135},
+  {prog:'PhD Education',college:'Education',type:'phd',col:'edu',e24:88,e23:92,e22:96,e21:98,e20:100,e19:102},
+  {prog:'Graduate Certificate — HR',college:'Business',type:'cert',col:'bus',e24:76,e23:80,e22:82,e21:85,e20:84,e19:80},
+  {prog:'MS Urban Planning',college:'Urban Affairs',type:'ma',col:'urban',e24:65,e23:68,e22:70,e21:72,e20:73,e19:74},
+];
+
+let activeType='all';let sortKey='enroll';let sortDir=-1;
+function yoy(p){return((p.e24-p.e23)/p.e23*100).toFixed(1)}
+function trendBar(p){const vals=[p.e19,p.e20,p.e21,p.e22,p.e23,p.e24];const mx=Math.max(...vals);return vals.map((v,i)=>`<div style="width:${Math.round(v/mx*22)}px;height:6px;background:${i===5?'#0F6E56':'#C0DD97'};border-radius:2px;display:inline-block;margin-right:1px"></div>`).join('')}
+function sortTable(key){if(sortKey===key)sortDir*=-1;else{sortKey=key;sortDir=-1}renderTable()}
+function setTypeFilter(t,el){activeType=t;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTable()}
+function filterTable(q){renderTable(q)}
+
+function renderTable(q=''){
+  q=(q||document.getElementById('prog-search').value).toLowerCase();
+  let progs=PROGRAMS.filter(p=>{
+    const typeOk=activeType==='all'||p.type===activeType;
+    const searchOk=!q||p.prog.toLowerCase().includes(q)||p.college.toLowerCase().includes(q);
+    return typeOk&&searchOk;
+  });
+  progs.sort((a,b)=>{
+    if(sortKey==='prog')return sortDir*(a.prog.localeCompare(b.prog));
+    if(sortKey==='enroll')return sortDir*(a.e24-b.e24);
+    if(sortKey==='yoy')return sortDir*(parseFloat(yoy(a))-parseFloat(yoy(b)));
+    return 0;
+  });
+  const typeLabels={ma:'Masters',phd:'Doctoral',cert:'Certificate',prof:'Professional'};
+  const tbody=document.getElementById('prog-tbody');
+  tbody.innerHTML=progs.map(p=>{
+    const y=parseFloat(yoy(p));
+    const pill=y>=2?`<span class="trend-pill tp-up">▲ ${y.toFixed(1)}%</span>`:y<=-2?`<span class="trend-pill tp-dn">▼ ${Math.abs(y).toFixed(1)}%</span>`:`<span class="trend-pill tp-fl">→ ${y.toFixed(1)}%</span>`;
+    return`<tr><td style="font-weight:500;color:var(--g800)">${p.prog}</td><td style="color:var(--g600)">${p.college}</td><td><span style="background:var(--g100);color:var(--g600);font-size:9.5px;padding:2px 6px;border-radius:4px">${typeLabels[p.type]}</span></td><td style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500">${p.e24.toLocaleString()}</td><td>${pill}</td><td>${trendBar(p)}</td></tr>`;
+  }).join('');
+  document.getElementById('table-count').textContent=`Showing ${progs.length} of ${PROGRAMS.length} programs`;
+}
+
+function renderCollegeChart(){
+  const colleges=[
+    {n:'Business',v:781,c:'#006633'},{n:'Engineering',v:860,c:'#007A3D'},
+    {n:'Law',v:520,c:'#C8993A'},{n:'Urban Affairs',v:375,c:'#0F6E56'},
+    {n:'Nursing',v:290,c:'#185FA5'},{n:'Education',v:328,c:'#534AB7'},
+    {n:'Arts & Sci.',v:606,c:'#009150'},
+  ].sort((a,b)=>b.v-a.v);
+  mk('collegeChart',{type:'bar',indexAxis:'y',data:{labels:colleges.map(c=>c.n),datasets:[{data:colleges.map(c=>c.v),backgroundColor:colleges.map(c=>c.c),borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.raw.toLocaleString()} graduate students`}}},scales:{x:{ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+
+function renderTrend(){
+  const yrs=['2019','2020','2021','2022','2023','2024'];
+  const series=[
+    {l:'MBA',d:[680,660,640,610,572,520],c:'#006633',dash:[]},
+    {l:'MS Engineering',d:[600,580,570,550,523,480],c:'#C8993A',dash:[5,3]},
+    {l:'MS Data Science',d:[55,82,110,140,168,185],c:'#0F6E56',dash:[]},
+    {l:'JD (Law)',d:[430,425,420,415,400,390],c:'#185FA5',dash:[4,2]},
+    {l:'MPA',d:[248,255,260,275,290,310],c:'#534AB7',dash:[]},
+  ];
+  const legEl=document.getElementById('trend-leg');legEl.innerHTML='';
+  series.forEach(s=>legEl.insertAdjacentHTML('beforeend',`<div class="li"><div class="ld" style="background:${s.c}"></div>${s.l}</div>`));
+  mk('trendChart',{type:'line',data:{labels:yrs,datasets:series.map(s=>({label:s.l,data:s.d,borderColor:s.c,backgroundColor:'transparent',borderWidth:2,borderDash:s.dash,pointRadius:3,pointHoverRadius:5,pointBackgroundColor:s.c,tension:.35}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toLocaleString()}`}}},scales:{y:{ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}},x:{grid:{display:false}}}}});
+}
+
+function renderPeer(){
+  const peers=['Toledo','Akron','Cleveland St.','Wright St.','BGSU','YSU'];
+  const vals=[5820,5640,3760,4100,3980,2890];
+  mk('peerChart',{type:'bar',indexAxis:'y',data:{labels:peers,datasets:[{data:vals,backgroundColor:peers.map(p=>p==='Cleveland St.'?'#0F6E56':'#B5D4F4'),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.raw.toLocaleString()} grad students`}}},scales:{x:{ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+
+function renderAlerts(){
+  const alerts=PROGRAMS.filter(p=>parseFloat(yoy(p))<=-5).sort((a,b)=>parseFloat(yoy(a))-parseFloat(yoy(b)));
+  document.getElementById('alert-table').innerHTML=`<table class="prog-table"><thead><tr><th>Program</th><th>College</th><th>Fall 2023</th><th>Fall 2024</th><th>YoY change</th><th>3-yr change</th><th>Recommended action</th></tr></thead><tbody>${alerts.map(p=>{const y=parseFloat(yoy(p));const t3=((p.e24-p.e21)/p.e21*100).toFixed(1);const actions={ma:'Program review · marketing investment · curriculum update',prof:'Yield analysis · financial aid review',phd:'Faculty recruitment · research funding'};return`<tr><td style="font-weight:500;color:var(--g800)">${p.prog}</td><td>${p.college}</td><td style="font-family:'DM Mono',monospace">${p.e23.toLocaleString()}</td><td style="font-family:'DM Mono',monospace">${p.e24.toLocaleString()}</td><td><span class="trend-pill tp-dn">▼ ${Math.abs(y).toFixed(1)}%</span></td><td><span class="trend-pill tp-dn">▼ ${Math.abs(parseFloat(t3)).toFixed(1)}%</span></td><td style="font-size:10.5px;color:var(--g600)">${actions[p.type]||'Strategic review'}</td></tr>`}).join('')}</tbody></table><div style="font-size:10.5px;color:var(--g400);margin-top:10px">${alerts.length} programs showing ≥5% YoY decline · Source: IPEDS EF / CSU CDS estimates</div>`;
+}
+
+function apply(){
+  document.getElementById('bdg').textContent=document.getElementById('fy').value==='all'?'2019–2024':'Fall '+document.getElementById('fy').value;
+  renderTable();renderCollegeChart();renderTrend();renderPeer();renderAlerts();
+}
+apply();
+</script>
+</body>
+</html>

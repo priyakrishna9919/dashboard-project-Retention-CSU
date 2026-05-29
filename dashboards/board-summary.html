@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CSU Board Summary — Fall 2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@media print {
+  .no-print{display:none!important}
+  body{background:#fff!important}
+  .page{box-shadow:none!important;margin:0!important;border-radius:0!important;min-height:auto!important}
+  .kpi-val{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+:root{--g:#006633;--g2:#007A3D;--gold:#C8993A;--g800:#1F2937;--g600:#4B5563;--g400:#9CA3AF;--g100:#F3F4F6;--g200:#E5E7EB}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#E8EDE9;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px}
+.toolbar{width:100%;max-width:900px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.toolbar-left{display:flex;align-items:center;gap:10px}
+.back-btn{background:#fff;border:1px solid var(--g200);color:var(--g600);padding:6px 14px;border-radius:8px;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.back-btn:hover{background:var(--g100)}
+.print-btn{background:var(--g);color:#fff;border:none;padding:7px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.15s}
+.print-btn:hover{background:var(--g2)}
+.page{background:#fff;width:100%;max-width:900px;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.15);overflow:hidden;min-height:560px}
+.page-header{background:linear-gradient(145deg,#001f0f 0%,#003d1f 45%,#005c2e 80%,#006633 100%);padding:36px 48px 32px;position:relative;overflow:hidden}
+.page-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),#E8C97A,var(--gold))}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+.csu-mark{display:flex;align-items:center;gap:14px}
+.csu-seal{width:54px;height:54px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:-1px}
+.csu-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.2}
+.csu-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;letter-spacing:.5px}
+.header-meta{text-align:right}
+.report-label{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.report-period{font-size:15px;font-weight:600;color:#fff}
+.report-note{font-size:10px;color:rgba(255,255,255,.4);margin-top:3px}
+.header-title{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:rgba(255,255,255,.6);border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+.kpi-section{padding:36px 48px;border-bottom:1px solid var(--g200)}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--g200);border-radius:12px;overflow:hidden}
+.kpi-item{padding:24px 20px 20px;position:relative;border-right:1px solid var(--g200)}
+.kpi-item:last-child{border-right:none}
+.kpi-item::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-item.green::before{background:var(--g)}
+.kpi-item.teal::before{background:#0F6E56}
+.kpi-item.gold::before{background:var(--gold)}
+.kpi-item.blue::before{background:#185FA5}
+.kpi-item.red::before{background:#DC2626}
+.kpi-label{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:10px}
+.kpi-val{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;line-height:1;color:var(--g800);margin-bottom:6px}
+.kpi-val.smaller{font-size:36px}
+.kpi-trend{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;margin-bottom:6px}
+.trend-up{background:#DCFCE7;color:#16A34A}
+.trend-dn{background:#FEF2F2;color:#DC2626}
+.trend-fl{background:var(--g100);color:var(--g600)}
+.kpi-src{font-size:9px;color:var(--g400);letter-spacing:.3px}
+.charts-section{padding:32px 48px;border-bottom:1px solid var(--g200)}
+.section-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--g200)}
+.charts-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px}
+.mini-chart-wrap{position:relative}
+.mini-chart-label{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--g400);margin-bottom:8px}
+.sparkline-wrap{width:100%;height:80px;position:relative}
+.bar-mini-wrap{display:flex;flex-direction:column;gap:6px}
+.bar-mini-row{display:flex;align-items:center;gap:8px;font-size:11px}
+.bar-mini-lbl{width:72px;color:var(--g600);flex-shrink:0;font-size:10.5px}
+.bar-mini-track{flex:1;height:10px;background:var(--g100);border-radius:3px;overflow:hidden}
+.bar-mini-fill{height:100%;border-radius:3px}
+.bar-mini-val{width:32px;font-size:10.5px;font-weight:600;color:var(--g800);text-align:right;font-family:'DM Mono',monospace}
+.narrative-section{padding:28px 48px 32px}
+.narrative-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.narrative-card{background:var(--g100);border-radius:10px;padding:16px 18px}
+.narr-icon{font-size:20px;margin-bottom:8px}
+.narr-title{font-size:12px;font-weight:600;color:var(--g800);margin-bottom:5px}
+.narr-body{font-size:11.5px;color:var(--g600);line-height:1.55}
+.narr-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;margin-top:6px}
+.page-footer{background:var(--g100);padding:14px 48px;display:flex;align-items:center;justify-content:space-between}
+.footer-note{font-size:10.5px;color:var(--g400)}
+.footer-sources{display:flex;gap:10px}
+.fsrc{font-size:9.5px;color:var(--g400);padding:2px 7px;background:#fff;border-radius:4px;border:1px solid var(--g200)}
+@media(max-width:700px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .charts-row,.narrative-grid{grid-template-columns:1fr}
+  .page-header,.kpi-section,.charts-section,.narrative-section,.page-footer{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+<div class="toolbar no-print">
+  <div class="toolbar-left">
+    <a href="../index.html" class="back-btn">← Portal Home</a>
+    <span style="font-size:12px;color:var(--g600)">Board of Trustees Summary · Fall 2024</span>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <div class="header-top">
+      <div class="csu-mark">
+        <div class="csu-seal">CSU</div>
+        <div>
+          <div class="csu-name">Cleveland State University</div>
+          <div class="csu-sub">Office of Institutional Research &amp; Planning</div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="report-label">Reporting period</div>
+        <div class="report-period">Fall 2024</div>
+        <div class="report-note">Data: IPEDS · CDS · CSU At-a-Glance</div>
+      </div>
+    </div>
+    <div class="header-title">Board of Trustees Enrollment &amp; Student Success Report — Executive Summary</div>
+  </div>
+
+  <div class="kpi-section">
+    <div class="kpi-grid">
+      <div class="kpi-item green">
+        <div class="kpi-label">Total enrollment</div>
+        <div class="kpi-val">14,210</div>
+        <div class="kpi-trend trend-dn">▼ 1.8%</div>
+        <div class="kpi-src">CSU At-a-Glance · IPEDS EF</div>
+      </div>
+      <div class="kpi-item teal">
+        <div class="kpi-label">1st-year retention</div>
+        <div class="kpi-val">72.4%</div>
+        <div class="kpi-trend trend-fl">→ stable</div>
+        <div class="kpi-src">IPEDS EF Survey</div>
+      </div>
+      <div class="kpi-item teal">
+        <div class="kpi-label">6-yr grad rate</div>
+        <div class="kpi-val">47.2%</div>
+        <div class="kpi-trend trend-up">▲ 1.2%</div>
+        <div class="kpi-src">IPEDS GRS cohort</div>
+      </div>
+      <div class="kpi-item gold">
+        <div class="kpi-label">Pell-eligible share</div>
+        <div class="kpi-val smaller">~42%</div>
+        <div class="kpi-trend trend-fl">→ urban access mission</div>
+        <div class="kpi-src">IPEDS SFA · CDS</div>
+      </div>
+      <div class="kpi-item blue">
+        <div class="kpi-label">New students</div>
+        <div class="kpi-val">2,840</div>
+        <div class="kpi-trend trend-up">▲ 2.1%</div>
+        <div class="kpi-src">CSU President's Report</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-section">
+    <div class="section-title">Trend context</div>
+    <div class="charts-row">
+      <div class="mini-chart-wrap">
+        <div class="mini-chart-label">10-year enrollment trend</div>
+        <div class="sparkline-wrap">
+          <canvas id="sparkEnroll" role="img" aria-label="10-year enrollment trend showing decline from 16,823 to 14,210">Enrollment declined from 16,823 in 2015 to 14,210 in 2024.</canvas>
+        </div>
+      </div>
+      <div class="mini-chart-wrap">
+        <div class="mini-chart-label">Retention trend (10yr)</div>
+        <div class="sparkline-wrap">
+          <canvas id="sparkRet" role="img" aria-label="Retention trend from 74.1% in 2015 to 72.4% in 2024">Retention rate declined slightly from 74.1% to 72.4%.</canvas>
+        </div>
+      </div>
+      <div class="mini-chart-wrap">
+        <div class="mini-chart-label">Enrollment by level</div>
+        <div class="bar-mini-wrap" style="margin-top:4px">
+          <div class="bar-mini-row"><div class="bar-mini-lbl">Undergraduate</div><div class="bar-mini-track"><div class="bar-mini-fill" style="width:73.5%;background:#006633"></div></div><div class="bar-mini-val">73.5%</div></div>
+          <div class="bar-mini-row"><div class="bar-mini-lbl">Graduate</div><div class="bar-mini-track"><div class="bar-mini-fill" style="width:22.8%;background:#C8993A"></div></div><div class="bar-mini-val">22.8%</div></div>
+          <div class="bar-mini-row"><div class="bar-mini-lbl">Law</div><div class="bar-mini-track"><div class="bar-mini-fill" style="width:3.7%;background:#007A3D"></div></div><div class="bar-mini-val">3.7%</div></div>
+          <div class="bar-mini-row"><div class="bar-mini-lbl">Full-time</div><div class="bar-mini-track"><div class="bar-mini-fill" style="width:62.8%;background:#185FA5"></div></div><div class="bar-mini-val">62.8%</div></div>
+          <div class="bar-mini-row"><div class="bar-mini-lbl">International</div><div class="bar-mini-track"><div class="bar-mini-fill" style="width:7.9%;background:#534AB7"></div></div><div class="bar-mini-val">7.9%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="narrative-section">
+    <div class="section-title">Board narrative — Fall 2024</div>
+    <div class="narrative-grid">
+      <div class="narrative-card">
+        <div class="narr-icon">📈</div>
+        <div class="narr-title">Enrollment — stable with headwinds</div>
+        <div class="narr-body">Total enrollment of 14,210 reflects a 1.8% decline versus Fall 2023, consistent with regional demographic trends. New student enrollment rose 2.1%, signaling improving recruitment performance. Graduate enrollment declined 5% — a priority area for targeted investment.</div>
+        <div class="narr-badge" style="background:#FEF9C3;color:#854F0B">⚠ Monitor graduate pipeline</div>
+      </div>
+      <div class="narrative-card">
+        <div class="narr-icon">🎓</div>
+        <div class="narr-title">Retention &amp; completion — improving</div>
+        <div class="narr-body">The 6-year graduation rate reached 47.2%, up 1.2 percentage points — the fourth consecutive year of improvement. First-year retention held steady at 72.4%, on par with Ohio urban peer average. Part-time student retention (est. 55%) remains the largest equity gap requiring intervention.</div>
+        <div class="narr-badge" style="background:#DCFCE7;color:#16A34A">✓ Grad rate positive trajectory</div>
+      </div>
+      <div class="narrative-card">
+        <div class="narr-icon">🌍</div>
+        <div class="narr-title">Access &amp; diversity — mission-aligned</div>
+        <div class="narr-body">CSU continues to serve its urban access mission: approximately 42% of students are Pell-eligible, 18.4% identify as Black/African American, and international enrollment grew 3.2% post-COVID. Cuyahoga County provides ~62% of Ohio resident students, reflecting CSU's deep regional roots.</div>
+        <div class="narr-badge" style="background:#E6F1FB;color:#185FA5">↑ International recovery</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-note">Prepared by Office of Institutional Research · Cleveland State University · Fall 2024</div>
+    <div class="footer-sources">
+      <span class="fsrc">IPEDS</span>
+      <span class="fsrc">CDS</span>
+      <span class="fsrc">CSU At-a-Glance</span>
+      <span class="fsrc">Ohio DHE</span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+Chart.defaults.font={family:"'DM Sans',sans-serif",size:10};Chart.defaults.color='#9CA3AF';
+const TIP={backgroundColor:'#1F2937',titleColor:'#F9FAFB',bodyColor:'#D1D5DB',padding:9,cornerRadius:7,titleFont:{weight:'600',size:11},bodyFont:{size:10.5}};
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+new Chart(document.getElementById('sparkEnroll'),{
+  type:'line',
+  data:{labels:yrs,datasets:[{data:[16823,16540,16102,15780,15420,15140,14820,14510,14470,14210],borderColor:'#006633',backgroundColor:'rgba(0,102,51,.08)',fill:true,tension:.4,borderWidth:2,pointRadius:2,pointHoverRadius:4,pointBackgroundColor:'#006633'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.raw.toLocaleString()} students`}}},scales:{y:{min:13000,max:18000,ticks:{callback:v=>(v/1000).toFixed(0)+'k',maxTicksLimit:4},grid:{color:'#F3F4F6'}},x:{grid:{display:false},ticks:{maxTicksLimit:5}}}}
+});
+new Chart(document.getElementById('sparkRet'),{
+  type:'line',
+  data:{labels:yrs,datasets:[{data:[74.1,73.8,73.5,73.2,73.0,72.8,72.5,72.6,72.3,72.4],borderColor:'#0F6E56',backgroundColor:'rgba(15,110,86,.08)',fill:true,tension:.4,borderWidth:2,pointRadius:2,pointHoverRadius:4,pointBackgroundColor:'#0F6E56'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.raw.toFixed(1)}%`}}},scales:{y:{min:70,max:77,ticks:{callback:v=>v+'%',maxTicksLimit:4},grid:{color:'#F3F4F6'}},x:{grid:{display:false},ticks:{maxTicksLimit:5}}}}
+});
+</script>
+</body>
+</html>
