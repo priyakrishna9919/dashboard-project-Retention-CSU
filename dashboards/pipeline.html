@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CSU Enrollment Pipeline Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--g:#006633;--g2:#007A3D;--g3:#00A85A;--gold:#C8993A;--gold-lt:#F5E9CE;--bg:#EFF4F1;--card:#FFF;--g100:#F3F4F6;--g200:#E5E7EB;--g400:#9CA3AF;--g600:#4B5563;--g800:#1F2937;--red:#DC2626;--red-lt:#FEF2F2;--teal:#0F6E56;--r:12px;--sh:0 1px 4px rgba(0,0,0,.09);--sh2:0 4px 18px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--g800)}
+header{background:linear-gradient(135deg,#003d1f 0%,var(--g) 55%,var(--g2) 100%);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,60,30,.4)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;max-width:1600px;margin:0 auto;flex-wrap:wrap;gap:10px}
+.hb{display:flex;align-items:center;gap:13px}
+.hl{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.25)}
+.ht{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1.2}
+.hsb{font-size:10px;opacity:.7;letter-spacing:.7px;text-transform:uppercase;margin-top:2px}
+.hr{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.fs{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:7px 28px 7px 11px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.7)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
+.fs option{background:#004422;color:#fff}
+.badge{background:var(--gold);color:#fff;padding:4px 11px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.back-btn{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.back-btn:hover{background:rgba(255,255,255,.22)}
+main{max-width:1600px;margin:0 auto;padding:22px 28px 48px}
+.sl{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--g200)}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;min-height:24px}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--g);color:#fff;padding:4px 10px 4px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.pill span{cursor:pointer;opacity:.7;font-size:12px}
+.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+@media(max-width:1100px){.kg{grid-template-columns:repeat(2,1fr)}}
+.kc{background:var(--card);border-radius:var(--r);padding:18px 20px 16px;box-shadow:var(--sh);border:1px solid var(--g200);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.kc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;background:var(--gold)}
+.kc.g::before{background:var(--g)}.kc.t::before{background:var(--teal)}
+.ki{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px;background:var(--gold-lt)}
+.kc.g .ki{background:#E8F5EE}.kc.t .ki{background:#E1F5EE}
+.kl{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+.kv{font-family:'DM Mono',monospace;font-size:27px;font-weight:500;color:var(--g800);line-height:1;margin-bottom:5px}
+.tg{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;padding:2px 6px;border-radius:20px}
+.tg.up{background:#DCFCE7;color:#16A34A}.tg.dn{background:var(--red-lt);color:var(--red)}.tg.fl{background:var(--g100);color:var(--g600)}
+.ks{position:absolute;bottom:8px;right:11px;font-size:9px;color:var(--g400);text-transform:uppercase}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1100px){.g2,.g3{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);overflow:hidden}
+.ch{padding:14px 18px 11px;border-bottom:1px solid var(--g100);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ct{font-size:13px;font-weight:600;color:var(--g800)}.cs{font-size:10.5px;color:var(--g400);margin-top:2px}
+.ctg{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:var(--gold-lt);color:#854F0B;white-space:nowrap;flex-shrink:0}
+.ctg.g{background:#E8F5EE;color:var(--g)}.ctg.t{background:#E1F5EE;color:var(--teal)}
+.cb{padding:14px 18px 18px}
+.leg{display:flex;flex-wrap:wrap;gap:9px}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g600)}
+.ld{width:9px;height:9px;border-radius:2px}
+.assume-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--r);padding:12px 18px;margin-bottom:20px}
+.assume-title{font-size:11px;font-weight:700;color:#854F0B;margin-bottom:6px;letter-spacing:.5px}
+.assume-list{display:flex;flex-wrap:wrap;gap:8px}
+.assume-tag{background:var(--gold-lt);color:#633806;font-size:10.5px;padding:3px 9px;border-radius:20px;font-weight:500}
+footer{background:#003d1f;color:rgba(255,255,255,.5);text-align:center;padding:15px;font-size:11px}
+footer b{color:rgba(255,255,255,.85);font-weight:500}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.kc{animation:fu .4s ease both}
+.kc:nth-child(1){animation-delay:.04s}.kc:nth-child(2){animation-delay:.08s}.kc:nth-child(3){animation-delay:.12s}.kc:nth-child(4){animation-delay:.16s}
+</style>
+</head>
+<body>
+<header>
+  <div class="hi">
+    <div class="hb">
+      <div class="hl">CSU</div>
+      <div><div class="ht">Enrollment Pipeline Dashboard</div><div class="hsb">Cleveland State University · Public Data Proxy Model</div></div>
+    </div>
+    <div class="hr">
+      <select class="fs" id="fy" onchange="apply()">
+        <option value="2024" selected>Fall 2024</option><option value="2023">Fall 2023</option>
+        <option value="2022">Fall 2022</option><option value="all">All Years</option>
+      </select>
+      <select class="fs" id="fl" onchange="apply()">
+        <option value="all">All Levels</option><option value="ug">Undergraduate</option>
+        <option value="grad">Graduate</option><option value="law">Law</option>
+      </select>
+      <select class="fs" id="fg" onchange="apply()">
+        <option value="all">All Origins</option><option value="oh">Ohio In-State</option>
+        <option value="oos">Out-of-State</option><option value="intl">International</option>
+      </select>
+      <a href="../index.html" class="back-btn">&#8592; Portal Home</a>
+      <div class="badge" id="bdg">Fall 2024</div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="pills" id="pills"></div>
+  <div class="assume-box">
+    <div class="assume-title">Public data proxy model — key assumptions</div>
+    <div class="assume-list">
+      <span class="assume-tag">No Slate/Banner access — IPEDS &amp; CDS only</span>
+      <span class="assume-tag">Admitted count = enrolled / historical 74% yield</span>
+      <span class="assume-tag">Applied = admitted / historical 66% admit rate</span>
+      <span class="assume-tag">Persistence from IPEDS Outcome Measures</span>
+      <span class="assume-tag">Graduation proxy = 6-yr rate applied forward</span>
+    </div>
+  </div>
+
+  <div class="sl">Pipeline KPI cards</div>
+  <div class="kg" id="kg"></div>
+
+  <div class="sl">Enrollment funnel &amp; new entrant trends</div>
+  <div class="g2">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Enrollment pipeline funnel</div><div class="cs">Click any stage for source notes</div></div><div class="ctg">Funnel</div></div>
+      <div class="cb">
+        <div id="funnel-wrap"></div>
+        <div id="funnel-detail" style="margin-top:12px;padding:10px 14px;background:var(--g100);border-radius:8px;font-size:12px;color:var(--g600);display:none;line-height:1.5"></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">New entrant trends (2019–2024)</div><div class="cs">Freshman · Transfer · Graduate · International</div></div><div class="ctg">Grouped bar</div></div>
+      <div class="cb">
+        <div id="entrant-leg" class="leg" style="margin-bottom:10px"></div>
+        <div style="position:relative;width:100%;height:240px"><canvas id="entrantChart" role="img" aria-label="New entrant trends at CSU 2019-2024 by type">Grouped bar chart of new entrant types.</canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Pipeline composition, geographic sourcing &amp; yield</div>
+  <div class="g3">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Entry type mix over time</div><div class="cs">Stacked proportion 2019–2024</div></div><div class="ctg g">Stacked</div></div>
+      <div class="cb">
+        <div style="position:relative;width:100%;height:220px"><canvas id="stackedEntry" role="img" aria-label="Stacked composition of new entrant types 2019-2024">Stacked bar chart.</canvas></div>
+        <div class="leg" style="margin-top:8px">
+          <div class="li"><div class="ld" style="background:#C8993A"></div>Freshman</div>
+          <div class="li"><div class="ld" style="background:#0F6E56"></div>Transfer</div>
+          <div class="li"><div class="ld" style="background:#185FA5"></div>Grad new</div>
+          <div class="li"><div class="ld" style="background:#534AB7"></div>International</div>
+        </div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Geographic pipeline source</div><div class="cs">New entrant origin split</div></div><div class="ctg">Donut</div></div>
+      <div class="cb" style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="position:relative;width:100%;max-width:180px;height:170px"><canvas id="geoSource" role="img" aria-label="Geographic source of new entrants donut chart">Ohio 82%, OOS 5%, International 13%.</canvas></div>
+        <div id="geo-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;width:100%"></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Proxy yield by entry type</div><div class="cs">Estimated from CDS admit/enroll data</div></div><div class="ctg t">Bar</div></div>
+      <div class="cb">
+        <div style="position:relative;width:100%;height:230px"><canvas id="yieldChart" role="img" aria-label="Proxy yield rates by entry type">Horizontal bar chart of yield rates.</canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Growth signals &amp; pipeline health scorecard</div>
+  <div class="g2">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Year-over-year growth by entry type</div><div class="cs">% change 2020–2024</div></div><div class="ctg g">Multi-line</div></div>
+      <div class="cb">
+        <div id="growth-leg" class="leg" style="margin-bottom:8px"></div>
+        <div style="position:relative;width:100%;height:220px"><canvas id="growthChart" role="img" aria-label="YoY growth rate by entry type 2020-2024">Line chart showing growth trends.</canvas></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Pipeline health scorecard</div><div class="cs">Signal strength by entry category</div></div><div class="ctg t">Scorecard</div></div>
+      <div class="cb" id="scorecard"></div>
+    </div>
+  </div>
+</main>
+<footer>Data: <b>IPEDS EF Survey</b> · <b>CSU Common Data Set</b> · <b>CSU At-a-Glance</b> · <b>IPEDS Outcome Measures</b> &nbsp;|&nbsp; Pipeline v1.0 · Public proxy · Fall 2024</footer>
+<script>
+const TIP={backgroundColor:'#1F2937',titleColor:'#F9FAFB',bodyColor:'#D1D5DB',padding:10,cornerRadius:8,titleFont:{weight:'600',size:12},bodyFont:{size:11}};
+Chart.defaults.font={family:"'DM Sans',sans-serif",size:11.5};Chart.defaults.color='#6B7280';
+const CH={};let S={year:'2024',level:'all',geo:'all'};
+const LBLS={year:{'2024':'Fall 2024','2023':'Fall 2023','2022':'Fall 2022','all':'All Years'},level:{all:'All Levels',ug:'Undergraduate',grad:'Graduate',law:'Law'},geo:{all:'All Origins',oh:'Ohio',oos:'Out-of-State',intl:'International'}};
+function mk(id,cfg){if(CH[id])CH[id].destroy();CH[id]=new Chart(document.getElementById(id),cfg)}
+function rPills(){document.getElementById('pills').innerHTML=Object.entries(S).filter(([k,v])=>v!=='all'&&v!=='2024').map(([k,v])=>`<div class="pill">${LBLS[k][v]}<span onclick="cf('${k}')">&#x2715;</span></div>`).join('')}
+function cf(k){document.getElementById({year:'fy',level:'fl',geo:'fg'}[k]).value='all';apply()}
+const D={freshmen:[2040,1980,1840,1860,1880,1860],transfer:[1080,1020,960,980,990,980],gradNew:[1180,1140,1080,1050,1060,1050],intl:[980,940,1020,1085,1100,1120],years:['2019','2020','2021','2022','2023','2024']};
+function apply(){
+  S={year:document.getElementById('fy').value,level:document.getElementById('fl').value,geo:document.getElementById('fg').value};
+  rPills();rKPI();rFunnel();rEntrant();rStacked();rGeoSource();rYield();rGrowth();rScorecard();
+  document.getElementById('bdg').textContent=S.year==='all'?'2019-2024':'Fall '+S.year;
+}
+function rKPI(){
+  const mul=S.level==='grad'?0.28:S.level==='law'?0.04:S.level==='ug'?0.68:1.0;
+  const gm=S.geo==='oh'?0.82:S.geo==='oos'?0.048:S.geo==='intl'?0.128:1.0;
+  const m=mul*gm*(S.year==='2023'?1.01:S.year==='2022'?1.02:S.year==='all'?5.2:1);
+  const kpis=[
+    {ico:'🎓',lbl:'New freshmen',val:Math.round(1860*m),tg:{c:'up',t:'▲ 2.1%'},mt:'vs prior year',src:'IPEDS/CDS',col:'g'},
+    {ico:'🔄',lbl:'New transfers',val:Math.round(980*m),tg:{c:'dn',t:'▼ 1.2%'},mt:'vs prior year',src:'CDS',col:''},
+    {ico:'🏛',lbl:'Graduate entrants',val:Math.round(1050*m),tg:{c:'dn',t:'▼ 5.0%'},mt:'vs prior year',src:'IPEDS',col:''},
+    {ico:'🌐',lbl:'International entrants',val:Math.round(1120*m),tg:{c:'up',t:'▲ 3.2%'},mt:'post-COVID recovery',src:'CDS',col:'t'},
+  ];
+  document.getElementById('kg').innerHTML=kpis.map(k=>`<div class="kc ${k.col}"><div class="ki">${k.ico}</div><div class="kl">${k.lbl}</div><div class="kv">${k.val.toLocaleString()}</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)"><span class="tg ${k.tg.c}">${k.tg.t}</span><span>${k.mt}</span></div><div class="ks">${k.src}</div></div>`).join('');
+}
+function rFunnel(){
+  const stages=[
+    {l:'Estimated applied (proxy)',v:8200,p:100,note:'Derived: total new enrolled ÷ historical 28% enrollment rate — CSU CDS Section C admit data'},
+    {l:'Estimated admitted',v:5400,p:65.9,note:'Proxy: CSU historical admit rate ~66% of applicants — CDS Section C'},
+    {l:'Total new enrolled',v:4010,p:48.9,note:'IPEDS EF: new freshman (1,860) + transfer (980) + grad new (1,050) + law (120)'},
+    {l:'Persisted to year 2',v:2940,p:35.9,note:'IPEDS Outcome Measures: 2nd-year continuation rate applied to new cohort'},
+    {l:'On track to graduate',v:1890,p:23.1,note:'Proxy: 6-yr graduation rate (47.2%) applied forward to entering cohort'},
+  ];
+  const colors=['#FAEEDA','#FAC775','#EF9F27','#BA7517','#854F0B'];
+  const tcolors=['#412402','#412402','#412402','#FAEEDA','#FAEEDA'];
+  const fw=document.getElementById('funnel-wrap');fw.innerHTML='';
+  stages.forEach((s,i)=>{
+    const el=document.createElement('div');el.style.cssText='cursor:pointer;margin-bottom:5px';
+    el.innerHTML=`<div style="background:${colors[i]};color:${tcolors[i]};border-radius:6px;padding:9px 14px;width:${s.p}%;min-width:220px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;transition:opacity .15s"><span style="font-weight:500">${s.l}</span><span style="font-family:'DM Mono',monospace;font-size:13px">${s.v.toLocaleString()}</span></div>`;
+    el.addEventListener('click',()=>{const d=document.getElementById('funnel-detail');d.style.display='block';d.innerHTML=`<strong style="color:var(--g800)">${s.l}</strong><br>${s.note}`;});
+    fw.appendChild(el);
+  });
+}
+function rEntrant(){
+  const yrs=S.year==='all'?D.years:[S.year];const idx=yrs.map(y=>D.years.indexOf(y));
+  const series=[{l:'Freshman',d:D.freshmen,c:'#C8993A'},{l:'Transfer',d:D.transfer,c:'#0F6E56'},{l:'Grad new',d:D.gradNew,c:'#185FA5'},{l:'International',d:D.intl,c:'#534AB7'}];
+  const el=document.getElementById('entrant-leg');el.innerHTML='';
+  series.forEach(s=>el.insertAdjacentHTML('beforeend',`<div class="li"><div class="ld" style="background:${s.c}"></div>${s.l}</div>`));
+  mk('entrantChart',{type:'bar',data:{labels:yrs,datasets:series.map(s=>({label:s.l,data:idx.map(j=>j>=0?s.d[j]:null),backgroundColor:s.c+'CC',borderColor:s.c,borderWidth:1,borderRadius:3,borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toLocaleString()}`}}},scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}}}}});
+}
+function rStacked(){
+  mk('stackedEntry',{type:'bar',data:{labels:D.years,datasets:[{label:'Freshman',data:D.freshmen,backgroundColor:'#C8993A'},{label:'Transfer',data:D.transfer,backgroundColor:'#0F6E56'},{label:'Grad new',data:D.gradNew,backgroundColor:'#185FA5'},{label:'International',data:D.intl,backgroundColor:'#534AB7',borderRadius:{topLeft:4,topRight:4}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toLocaleString()}`}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}}}}});
+}
+function rGeoSource(){
+  const oh=S.geo==='oos'||S.geo==='intl'?0:S.geo==='oh'?1:0.824;
+  const oos=S.geo==='oh'||S.geo==='intl'?0:S.geo==='oos'?1:0.048;
+  const intl=S.geo==='oh'||S.geo==='oos'?0:S.geo==='intl'?1:0.128;
+  const t=4010;const v=[Math.round(oh*t),Math.round(oos*t),Math.round(intl*t)];
+  mk('geoSource',{type:'doughnut',data:{labels:['Ohio','Out-of-state','International'],datasets:[{data:v,backgroundColor:['#006633','#185FA5','#534AB7'],borderWidth:0,hoverOffset:5}]},options:{cutout:'70%',plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.label}: ${c.raw.toLocaleString()} (${((c.raw/t)*100).toFixed(1)}%)`}}}}});
+  const gs=document.getElementById('geo-stats');
+  gs.innerHTML=[{l:'Ohio',v:v[0],c:'#006633'},{l:'Out-of-state',v:v[1],c:'#185FA5'},{l:'International',v:v[2],c:'#534AB7'}].map(it=>`<div style="text-align:center;background:var(--g100);border-radius:8px;padding:8px 4px"><div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:${it.c}">${it.v.toLocaleString()}</div><div style="font-size:9.5px;color:var(--g400);margin-top:2px">${it.l}</div></div>`).join('');
+}
+function rYield(){
+  mk('yieldChart',{type:'bar',indexAxis:'y',data:{labels:['Freshman','Transfer','Graduate','International','Law'],datasets:[{label:'Proxy yield',data:[33,62,44,38,71],backgroundColor:['#C8993A','#0F6E56','#185FA5','#534AB7','#006633'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` Yield: ${c.raw}% (proxy)`}}},scales:{x:{min:0,max:80,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+function rGrowth(){
+  const growthYrs=['2020','2021','2022','2023','2024'];
+  const series=[{l:'Freshman',d:[-2.9,-7.1,1.1,1.1,2.1],c:'#C8993A',dash:[]},{l:'Transfer',d:[-5.6,-5.9,2.1,1.0,-1.2],c:'#0F6E56',dash:[5,3]},{l:'Graduate',d:[-3.4,-5.3,-2.8,1.0,-5.0],c:'#185FA5',dash:[]},{l:'International',d:[-4.1,8.5,6.4,1.4,3.2],c:'#534AB7',dash:[4,2]}];
+  const el=document.getElementById('growth-leg');el.innerHTML='';
+  series.forEach(s=>el.insertAdjacentHTML('beforeend',`<div class="li"><div class="ld" style="background:${s.c}"></div>${s.l}</div>`));
+  mk('growthChart',{type:'line',data:{labels:growthYrs,datasets:series.map(s=>({label:s.l,data:s.d,borderColor:s.c,backgroundColor:'transparent',borderWidth:2,borderDash:s.dash,pointRadius:3.5,pointHoverRadius:5,pointBackgroundColor:s.c,tension:.3}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw>0?'+':''}${c.raw.toFixed(1)}%`}}},scales:{y:{min:-10,max:12,ticks:{callback:v=>(v>0?'+':'')+v+'%'},grid:{color:'#F3F4F6'}},x:{grid:{display:false}}}}});
+}
+function rScorecard(){
+  const items=[
+    {cat:'New freshman',signal:'Positive',note:'▲ 2.1% — recovering from COVID trough. Cuyahoga County stable.',tc:'#16A34A',bg:'#DCFCE7',ico:'▲'},
+    {cat:'Transfer students',signal:'Watch',note:'▼ 1.2% — community college pipeline thinning.',tc:'#854F0B',bg:'#FEF9C3',ico:'→'},
+    {cat:'Graduate entrants',signal:'Alert',note:'▼ 5.0% — steepest decline. Grad program competitiveness at risk.',tc:'#DC2626',bg:'#FEF2F2',ico:'▼'},
+    {cat:'International',signal:'Positive',note:'▲ 3.2% — strong post-COVID recovery. India/China/Saudi growing.',tc:'#16A34A',bg:'#DCFCE7',ico:'▲'},
+    {cat:'Law school',signal:'Stable',note:'→ flat ~520. Bar passage rate drives yield.',tc:'#185FA5',bg:'#EFF6FF',ico:'→'},
+    {cat:'Overall pipeline',signal:'Mixed',note:'Grad decline partially offset by UG and international gains.',tc:'#854F0B',bg:'#FEF9C3',ico:'→'},
+  ];
+  document.getElementById('scorecard').innerHTML=items.map(it=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--g100)"><div style="width:7px;height:7px;border-radius:50%;background:${it.tc};flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--g800)">${it.cat}</div><div style="font-size:10.5px;color:var(--g600);margin-top:1px">${it.note}</div></div><div style="background:${it.bg};color:${it.tc};font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap">${it.ico} ${it.signal}</div></div>`).join('');
+}
+apply();
+</script>
+</body>
+</html>
