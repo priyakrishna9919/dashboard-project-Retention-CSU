@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CSU Executive Enrollment Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root{--g:#006633;--g2:#007A3D;--g3:#00A85A;--gold:#C8993A;--gold-lt:#F5E9CE;--bg:#EFF4F1;--card:#FFF;--g50:#F9FAFB;--g100:#F3F4F6;--g200:#E5E7EB;--g400:#9CA3AF;--g600:#4B5563;--g800:#1F2937;--red:#DC2626;--red-lt:#FEF2F2;--r:12px;--sh:0 1px 4px rgba(0,0,0,.09);--sh2:0 4px 18px rgba(0,0,0,.12)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--g800);min-height:100vh}
+    header{background:linear-gradient(135deg,#003d1f 0%,var(--g) 55%,var(--g2) 100%);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,60,30,.4)}
+    .hi{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;max-width:1600px;margin:0 auto;flex-wrap:wrap;gap:10px}
+    .hb{display:flex;align-items:center;gap:13px}
+    .hl{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.25)}
+    .ht{font-family:'Playfair Display',serif;font-size:16.5px;font-weight:700;line-height:1.2}
+    .hs{font-size:10.5px;opacity:.7;letter-spacing:.7px;text-transform:uppercase;margin-top:2px}
+    .hr{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+    .fs{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:7px 28px 7px 11px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.7)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;transition:.15s}
+    .fs:hover{background-color:rgba(255,255,255,.22)}
+    .fs option{background:#004422;color:#fff}
+    .badge{background:var(--gold);color:#fff;padding:4px 11px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+    main{max-width:1600px;margin:0 auto;padding:22px 28px 48px}
+    .sl{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--g);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+    .sl::after{content:'';flex:1;height:1px;background:var(--g200)}
+    .kg{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+    @media(max-width:1100px){.kg{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.kg{grid-template-columns:1fr}}
+    .kc{background:var(--card);border-radius:var(--r);padding:19px 21px 17px;box-shadow:var(--sh);border:1px solid var(--g200);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+    .kc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+    .kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g);border-radius:var(--r) var(--r) 0 0}
+    .kc.gold::before{background:var(--gold)}.kc.lt::before{background:var(--g3)}
+    .ki{width:35px;height:35px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:11px;background:#E8F5EE}
+    .kc.gold .ki{background:var(--gold-lt)}
+    .kl{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+    .kv{font-family:'DM Mono',monospace;font-size:29px;font-weight:500;color:var(--g800);line-height:1;margin-bottom:6px}
+    .km{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)}
+    .tg{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;padding:2px 6px;border-radius:20px}
+    .tg.up{background:#DCFCE7;color:#16A34A}.tg.dn{background:var(--red-lt);color:var(--red)}.tg.fl{background:var(--g100);color:var(--g600)}
+    .ks{position:absolute;bottom:8px;right:11px;font-size:9px;letter-spacing:.4px;color:var(--g400);text-transform:uppercase}
+    .g2{display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:13px}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin-bottom:13px}
+    .g22{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:24px}
+    @media(max-width:1100px){.g2,.g3,.g22{grid-template-columns:1fr}}
+    .cc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);overflow:hidden;transition:box-shadow .18s}
+    .cc:hover{box-shadow:var(--sh2)}
+    .ch{padding:15px 19px 11px;border-bottom:1px solid var(--g100);display:flex;justify-content:space-between;align-items:flex-start}
+    .ct{font-size:13px;font-weight:600;color:var(--g800)}.cs{font-size:10.5px;color:var(--g400);margin-top:2px}
+    .ctg{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:#E8F5EE;color:var(--g)}
+    .cb{padding:15px 19px 19px;position:relative}
+    .leg{display:flex;flex-wrap:wrap;gap:9px;padding:0 19px 13px}
+    .li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g600)}
+    .ld{width:8px;height:8px;border-radius:50%}
+    .dr{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+    .dl{width:155px;font-size:11.5px;color:var(--g600);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .dw{flex:1;background:var(--g100);border-radius:4px;height:9px;overflow:hidden}
+    .df{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+    .dp{width:36px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--g800);flex-shrink:0}
+    .dc{width:46px;text-align:right;font-size:10px;color:var(--g400);flex-shrink:0}
+    .lt2{width:100%;border-collapse:collapse}
+    .lt2 th{text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--g400);padding:0 7px 7px 0;border-bottom:1px solid var(--g200)}
+    .lt2 td{padding:9px 7px 9px 0;font-size:12.5px;border-bottom:1px solid var(--g100);vertical-align:middle}
+    .lt2 tr:last-child td{border-bottom:none}
+    .do2{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+    .lv{font-family:'DM Mono',monospace;font-size:13.5px;font-weight:500}
+    .lp{font-size:10.5px;color:var(--g400)}
+    .mb2{height:5px;background:var(--g100);border-radius:3px;overflow:hidden}
+    .mf2{height:100%;border-radius:3px}
+    .og{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 19px 19px}
+    .oi{background:var(--g50);border-radius:8px;padding:13px;text-align:center}
+    .ov{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--g)}
+    .ol{font-size:10px;color:var(--g400);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+    .nd{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border-radius:var(--r);font-size:12.5px;color:var(--g400);font-weight:500;z-index:10}
+    .nd.show{display:flex}
+    .pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;min-height:26px}
+    .pill{display:inline-flex;align-items:center;gap:5px;background:var(--g);color:#fff;padding:4px 10px 4px 9px;border-radius:20px;font-size:11px;font-weight:500}
+    .pill span{cursor:pointer;opacity:.7;font-size:12px;line-height:1}
+    .pill span:hover{opacity:1}
+    footer{background:#003d1f;color:rgba(255,255,255,.5);text-align:center;padding:15px 28px;font-size:10.5px;letter-spacing:.3px}
+    footer b{color:rgba(255,255,255,.85);font-weight:500}
+    @keyframes fu{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+    .kc{animation:fu .4s ease both}
+    .kc:nth-child(1){animation-delay:.04s}.kc:nth-child(2){animation-delay:.08s}.kc:nth-child(3){animation-delay:.12s}.kc:nth-child(4){animation-delay:.16s}
+    .kc:nth-child(5){animation-delay:.20s}.kc:nth-child(6){animation-delay:.24s}.kc:nth-child(7){animation-delay:.28s}.kc:nth-child(8){animation-delay:.32s}
+  </style>
+</head>
+<body>
+<header>
+  <div class="hi">
+    <div class="hb">
+      <div class="hl">CSU</div>
+      <div><div class="ht">Executive Enrollment Dashboard</div><div class="hs">Cleveland State University &middot; Institutional Research</div></div>
+    </div>
+    <div class="hr">
+      <select class="fs" id="fy" onchange="apply()">
+        <option value="all">All Years</option><option value="2024" selected>Fall 2024</option>
+        <option value="2023">Fall 2023</option><option value="2022">Fall 2022</option>
+        <option value="2021">Fall 2021</option><option value="2020">Fall 2020</option><option value="2019">Fall 2019</option>
+      </select>
+      <select class="fs" id="fc" onchange="apply()">
+        <option value="all">All Colleges</option><option value="arts">Arts &amp; Sciences</option>
+        <option value="business">Business</option><option value="engineering">Engineering</option>
+        <option value="nursing">Nursing</option><option value="grad">Grad Studies</option>
+        <option value="education">Education</option><option value="law">Law</option>
+      </select>
+      <select class="fs" id="fl" onchange="apply()">
+        <option value="all">All Levels</option><option value="ug">Undergraduate</option>
+        <option value="grad">Graduate</option><option value="law">Law</option>
+      </select>
+      <select class="fs" id="fst" onchange="apply()">
+        <option value="all">Full &amp; Part-Time</option><option value="ft">Full-Time Only</option><option value="pt">Part-Time Only</option>
+      </select>
+      <a href="../index.html" style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px"><div class="badge" id="bdg">Fall 2024</div>#8592; Portal Home</a><div class="badge" id="bdg">Fall 2024</div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="pills" id="pills"></div>
+  <div class="sl">Key Performance Indicators</div>
+  <div class="kg" id="kg"></div>
+  <div class="sl">Enrollment Analytics</div>
+  <div class="g2">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Enrollment Trend</div><div class="cs" id="ts">10-year headcount 2015–2024</div></div><div class="ctg">Line Chart</div></div>
+      <div class="cb"><div class="nd" id="ndt">No data for selected filters</div><canvas id="trendChart" height="210"></canvas></div>
+      <div class="leg"><div class="li"><div class="ld" style="background:#006633"></div>Total</div><div class="li"><div class="ld" style="background:#00A85A"></div>Undergraduate</div><div class="li"><div class="ld" style="background:#C8993A"></div>Graduate</div></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Enrollment by Level</div><div class="cs" id="ls">Fall 2024 breakdown</div></div><div class="ctg">Summary</div></div>
+      <div class="cb"><table class="lt2" id="lvltbl"></table></div>
+      <div class="og"><div class="oi"><div class="ov" id="rr">72.4%</div><div class="ol">Retention Rate</div></div><div class="oi"><div class="ov" id="gr2">47.2%</div><div class="ol">6-Yr Grad Rate</div></div></div>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Enrollment by College</div><div class="cs">Which colleges drive enrollment?</div></div><div class="ctg">Bar Chart</div></div>
+      <div class="cb"><div class="nd" id="ndc">No data for selected filters</div><canvas id="collegeChart" height="250"></canvas></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Full-Time vs Part-Time</div><div class="cs" id="fts">Enrollment status mix</div></div><div class="ctg">Donut</div></div>
+      <div class="cb" style="display:flex;flex-direction:column;align-items:center;gap:13px">
+        <div class="nd" id="ndft">Single status filter applied</div>
+        <canvas id="ftptChart" height="175" style="max-width:195px"></canvas>
+        <div style="display:flex;gap:18px;margin-top:3px">
+          <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:19px;font-weight:500;color:#006633" id="ftc">8,920</div><div style="font-size:10px;color:var(--g400);text-transform:uppercase;letter-spacing:.4px" id="ftp">Full-Time &middot; 62.8%</div></div>
+          <div style="width:1px;background:var(--g200)"></div>
+          <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:19px;font-weight:500;color:#C8993A" id="ptc">5,290</div><div style="font-size:10px;color:var(--g400);text-transform:uppercase;letter-spacing:.4px" id="ptp">Part-Time &middot; 37.2%</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Demographic Composition</div><div class="cs">Race/Ethnicity &middot; IPEDS</div></div><div class="ctg">100% Bar</div></div>
+      <div class="cb" id="demoR"></div>
+    </div>
+  </div>
+  <div class="sl">Trend &amp; Student Mix Detail</div>
+  <div class="g22">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Stacked Enrollment by Level</div><div class="cs">UG / Grad / Law over time</div></div><div class="ctg">Stacked Column</div></div>
+      <div class="cb"><div class="nd" id="nds">No data</div><canvas id="stackedChart" height="215"></canvas></div>
+      <div class="leg"><div class="li"><div class="ld" style="background:#006633"></div>Undergraduate</div><div class="li"><div class="ld" style="background:#C8993A"></div>Graduate</div><div class="li"><div class="ld" style="background:#007A3D"></div>Law</div></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Student Type Distribution</div><div class="cs" id="typesub">All student types</div></div><div class="ctg">Horizontal Bar</div></div>
+      <div class="cb"><div class="nd" id="ndty">No data</div><canvas id="typeChart" height="215"></canvas></div>
+    </div>
+  </div>
+</main>
+<footer>Data: <b>CSU At-a-Glance</b> &middot; <b>IPEDS</b> &middot; <b>CSU Common Data Set</b> &middot; <b>CSU Book of Trends</b> &middot; <b>Ohio Dept. of Higher Education</b> &nbsp;|&nbsp; Interactive Dashboard v2.0</footer>
+<script>
+const YRS=['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+const D={
+  total:[16823,16540,16102,15780,15420,15140,14820,14510,14470,14210],
+  ug:   [12100,11900,11600,11350,11050,10820,10690,10580,10510,10450],
+  grad: [4723,4640,4502,4430,4370,4320,4130,3930,3960,3760],
+  law:  [520,520,520,520,520,520,520,520,520,520],
+  yrd:{
+    '2024':{total:14210,ug:10450,grad:3760,law:520,ft:8920,pt:5290,intl:1120,tr:980,ns:2840,prev:14470},
+    '2023':{total:14470,ug:10510,grad:3960,law:520,ft:9060,pt:5410,intl:1085,tr:995,ns:2780,prev:14510},
+    '2022':{total:14510,ug:10580,grad:3930,law:520,ft:9110,pt:5400,intl:1050,tr:1020,ns:2720,prev:14820},
+    '2021':{total:14820,ug:10690,grad:4130,law:520,ft:9320,pt:5500,intl:1020,tr:1080,ns:2810,prev:15140},
+    '2020':{total:15140,ug:10820,grad:4320,law:520,ft:9500,pt:5640,intl:1090,tr:1120,ns:2940,prev:15420},
+    '2019':{total:15420,ug:11050,grad:4370,law:520,ft:9690,pt:5730,intl:1140,tr:1180,ns:3020,prev:15780},
+    all:{total:14210,ug:10450,grad:3760,law:520,ft:8920,pt:5290,intl:1120,tr:980,ns:2840,prev:14470}
+  },
+  colleges:[
+    {n:'Arts & Sciences',ug:2800,g:320,l:0,c:'#006633'},{n:'Business',ug:2200,g:640,l:0,c:'#007A3D'},
+    {n:'Engineering',ug:1700,g:510,l:0,c:'#009150'},{n:'Nursing',ug:1050,g:290,l:0,c:'#00A85A'},
+    {n:'Grad Studies',ug:0,g:1200,l:0,c:'#00C96E'},{n:'Education',ug:700,g:280,l:0,c:'#33D688'},
+    {n:'Law',ug:0,g:0,l:520,c:'#C8993A'}
+  ],
+  cmap:{arts:'Arts & Sciences',business:'Business',engineering:'Engineering',nursing:'Nursing',grad:'Grad Studies',education:'Education',law:'Law'},
+  types:{all:{cont:10320,frsh:1860,tr:980,ng:1050},ug:{cont:7450,frsh:1860,tr:980,ng:0},grad:{cont:2870,frsh:0,tr:0,ng:1050},law:{cont:520,frsh:0,tr:0,ng:0}},
+  demo:[
+    {g:'White',p:51.2,c:7276,cl:'#006633'},{g:'Black/African Amer.',p:18.4,c:2615,cl:'#C8993A'},
+    {g:'Hispanic/Latino',p:7.6,c:1080,cl:'#007A3D'},{g:'International',p:7.9,c:1123,cl:'#00A85A'},
+    {g:'Asian',p:5.8,c:824,cl:'#E8C97A'},{g:'Two or More',p:4.3,c:611,cl:'#33D688'},{g:'Unknown/Other',p:4.8,c:681,cl:'#9CA3AF'}
+  ]
+};
+let CH={};
+const TIP={backgroundColor:'#1F2937',titleColor:'#F9FAFB',bodyColor:'#D1D5DB',padding:10,cornerRadius:8,titleFont:{weight:'600',size:12},bodyFont:{size:11}};
+Chart.defaults.font={family:"'DM Sans',sans-serif",size:11.5};Chart.defaults.color='#6B7280';
+let S={year:'2024',college:'all',level:'all',status:'all'};
+function mk(id,cfg){if(CH[id])CH[id].destroy();CH[id]=new Chart(document.getElementById(id),cfg)}
+function fmt(n){return typeof n==='number'?n.toLocaleString():n}
+function sc(v){if(S.status==='ft')return Math.round(v*.628);if(S.status==='pt')return Math.round(v*.372);return v}
+function vy(){return S.year!=='all'?[S.year]:YRS}
+function yd(){return D.yrd[S.year==='all'?'all':S.year]}
+const LBLS={year:{'2024':'Fall 2024','2023':'Fall 2023','2022':'Fall 2022','2021':'Fall 2021','2020':'Fall 2020','2019':'Fall 2019',all:'All Years'},college:{all:'All Colleges',arts:'Arts & Sciences',business:'Business',engineering:'Engineering',nursing:'Nursing',grad:'Grad Studies',education:'Education',law:'Law'},level:{all:'All Levels',ug:'Undergraduate',grad:'Graduate',law:'Law'},status:{all:'All Status',ft:'Full-Time Only',pt:'Part-Time Only'}};
+function rPills(){document.getElementById('pills').innerHTML=Object.entries(S).filter(([k,v])=>v!=='all').map(([k,v])=>`<div class="pill">${LBLS[k][v]}<span onclick="cf('${k}')">&#x2715;</span></div>`).join('')}
+function cf(k){document.getElementById({year:'fy',college:'fc',level:'fl',status:'fst'}[k]).value='all';apply()}
+function apply(){
+  S={year:document.getElementById('fy').value,college:document.getElementById('fc').value,level:document.getElementById('fl').value,status:document.getElementById('fst').value};
+  rPills();rKPI();rTrend();rLevel();rCollege();rFTPT();rDemo();rStacked();rType();
+  document.getElementById('bdg').textContent=S.year==='all'?'2015–2024':'Fall '+S.year;
+}
+function rKPI(){
+  const d=yd(),g=(((d.total-d.prev)/d.prev)*100).toFixed(1),gd=+g>=0;
+  let tot,ug,grd;
+  if(S.level==='ug'){tot=sc(d.ug);ug=sc(d.ug);grd='—'}
+  else if(S.level==='grad'){tot=sc(d.grad);ug='—';grd=sc(d.grad)}
+  else if(S.level==='law'){tot=sc(d.law);ug='—';grd='—'}
+  else{tot=sc(d.total);ug=sc(d.ug);grd=sc(d.grad)}
+  const ft=S.status==='pt'?'—':d.ft,pt=S.status==='ft'?'—':d.pt;
+  const cards=[
+    {ico:'🎓',lbl:'Total Enrollment',val:fmt(tot),tg:{c:gd?'up':'dn',t:(gd?'▲':'▼')+Math.abs(g)+'%'},mt:'vs prior year',src:'CSU At-a-Glance',col:''},
+    {ico:'📚',lbl:'Undergraduate',val:fmt(ug),tg:{c:'fl',t:`→ ${((d.ug/d.total)*100).toFixed(0)}%`},mt:'of total',src:'IPEDS',col:'lt'},
+    {ico:'🏛️',lbl:'Graduate',val:fmt(grd),tg:{c:'fl',t:`→ ${((d.grad/d.total)*100).toFixed(0)}%`},mt:'of total',src:'IPEDS',col:''},
+    {ico:'✨',lbl:'New Students',val:fmt(d.ns),tg:{c:'up',t:'▲ 2.1%'},mt:'vs prior year',src:"President's Report",col:'gold'},
+    {ico:'⏱️',lbl:'Full-Time',val:fmt(ft),tg:{c:'fl',t:`→ ${((d.ft/d.total)*100).toFixed(0)}%`},mt:'of total',src:'IPEDS',col:''},
+    {ico:'🕐',lbl:'Part-Time',val:fmt(pt),tg:{c:'fl',t:`→ ${((d.pt/d.total)*100).toFixed(0)}%`},mt:'of total',src:'IPEDS',col:''},
+    {ico:'🌐',lbl:'International',val:fmt(d.intl),tg:{c:'up',t:'▲ 3.2%'},mt:'vs prior year',src:'CDS',col:'lt'},
+    {ico:'🔄',lbl:'Transfer Students',val:fmt(d.tr),tg:{c:'dn',t:'▼ 1.2%'},mt:'vs prior year',src:'CDS',col:'gold'}
+  ];
+  document.getElementById('kg').innerHTML=cards.map(c=>`<div class="kc ${c.col}"><div class="ki">${c.ico}</div><div class="kl">${c.lbl}</div><div class="kv">${c.val}</div><div class="km"><span class="tg ${c.tg.c}">${c.tg.t}</span><span>${c.mt}</span></div><div class="ks">${c.src}</div></div>`).join('');
+}
+function rTrend(){
+  const vys=vy(),ix=vys.map(y=>YRS.indexOf(y));
+  let tot,ug,grd;
+  if(S.level==='ug'){ug=ix.map(i=>sc(D.ug[i]));tot=ug;grd=null}
+  else if(S.level==='grad'){grd=ix.map(i=>sc(D.grad[i]));tot=grd;ug=null}
+  else if(S.level==='law'){tot=ix.map(i=>sc(D.law[i]));ug=null;grd=null}
+  else{tot=ix.map(i=>sc(D.total[i]));ug=ix.map(i=>sc(D.ug[i]));grd=ix.map(i=>sc(D.grad[i]))}
+  document.getElementById('ndt').classList.toggle('show',tot.every(v=>!v));
+  document.getElementById('ts').textContent=vys.length===1?`Single year · ${vys[0]}`:`Headcount · ${vys[0]}–${vys[vys.length-1]}`;
+  const ds=[{label:'Total',data:tot,borderColor:'#006633',backgroundColor:'rgba(0,102,51,.07)',fill:true,tension:.4,borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#006633'}];
+  if(ug)ds.push({label:'Undergraduate',data:ug,borderColor:'#00A85A',backgroundColor:'transparent',tension:.4,borderWidth:2,pointRadius:3,pointHoverRadius:5,pointBackgroundColor:'#00A85A'});
+  if(grd)ds.push({label:'Graduate',data:grd,borderColor:'#C8993A',backgroundColor:'transparent',tension:.4,borderWidth:2,borderDash:[5,3],pointRadius:3,pointHoverRadius:5,pointBackgroundColor:'#C8993A'});
+  mk('trendChart',{type:'line',data:{labels:vys,datasets:ds},options:{responsive:true,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toLocaleString()}`}}},scales:{y:{min:0,ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}},x:{grid:{display:false}}}}});
+}
+function rLevel(){
+  const d=yd(),tot=d.total;
+  let rows;
+  if(S.level==='ug')rows=[{l:'Undergraduate',v:sc(d.ug),c:'#006633',p:100}];
+  else if(S.level==='grad')rows=[{l:'Graduate',v:sc(d.grad),c:'#C8993A',p:100}];
+  else if(S.level==='law')rows=[{l:'Law',v:sc(d.law),c:'#007A3D',p:100}];
+  else rows=[{l:'Undergraduate',v:sc(d.ug),c:'#006633',p:+((d.ug/tot)*100).toFixed(1)},{l:'Graduate',v:sc(d.grad),c:'#C8993A',p:+((d.grad/tot)*100).toFixed(1)},{l:'Law',v:sc(d.law),c:'#007A3D',p:+((d.law/tot)*100).toFixed(1)}];
+  const mx=Math.max(...rows.map(r=>r.v));
+  document.getElementById('lvltbl').innerHTML=`<thead><tr><th>Level</th><th>Count</th><th>Share</th><th style="width:80px">Bar</th></tr></thead><tbody>${rows.map(r=>`<tr><td><span class="do2" style="background:${r.c}"></span>${r.l}</td><td><span class="lv">${r.v.toLocaleString()}</span></td><td class="lp">${r.p}%</td><td><div class="mb2"><div class="mf2" style="width:${(r.v/mx*100).toFixed(1)}%;background:${r.c}"></div></div></td></tr>`).join('')}</tbody>`;
+  document.getElementById('ls').textContent=(S.year==='all'?'All years':'Fall '+S.year)+' breakdown';
+}
+function rCollege(){
+  let data=D.colleges.map(c=>{
+    if(S.college!=='all'&&c.n!==D.cmap[S.college])return null;
+    let v=S.level==='ug'?c.ug:S.level==='grad'?c.g:S.level==='law'?c.l:c.ug+c.g+c.l;
+    v=sc(v);return v>0?{n:c.n,v,c:c.c}:null;
+  }).filter(Boolean);
+  document.getElementById('ndc').classList.toggle('show',data.length===0);
+  if(!data.length)return;
+  mk('collegeChart',{type:'bar',data:{labels:data.map(d=>d.n),datasets:[{data:data.map(d=>d.v),backgroundColor:data.map(d=>d.c),borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.raw.toLocaleString()} students`}}},scales:{x:{ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+function rFTPT(){
+  const d=yd();let ftV=d.ft,ptV=d.pt;
+  if(S.level==='ug'){ftV=Math.round(d.ug*.65);ptV=Math.round(d.ug*.35)}
+  if(S.level==='grad'){ftV=Math.round(d.grad*.55);ptV=Math.round(d.grad*.45)}
+  if(S.level==='law'){ftV=Math.round(d.law*.85);ptV=Math.round(d.law*.15)}
+  document.getElementById('ndft').classList.toggle('show',S.status==='ft'||S.status==='pt');
+  const tot=ftV+ptV;
+  document.getElementById('ftc').textContent=ftV.toLocaleString();
+  document.getElementById('ftp').textContent=`Full-Time · ${((ftV/tot)*100).toFixed(1)}%`;
+  document.getElementById('ptc').textContent=ptV.toLocaleString();
+  document.getElementById('ptp').textContent=`Part-Time · ${((ptV/tot)*100).toFixed(1)}%`;
+  document.getElementById('fts').textContent=(S.year==='all'?'All years':'Fall '+S.year)+' status mix';
+  mk('ftptChart',{type:'doughnut',data:{labels:['Full-Time','Part-Time'],datasets:[{data:[ftV,ptV],backgroundColor:['#006633','#C8993A'],borderWidth:0,hoverOffset:6}]},options:{cutout:'72%',plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.label}: ${c.raw.toLocaleString()} (${((c.raw/tot)*100).toFixed(1)}%)`}}}}});
+}
+function rDemo(){
+  document.getElementById('demoR').innerHTML=D.demo.map(d=>`<div class="dr"><div class="dl">${d.g}</div><div class="dw"><div class="df" style="width:${d.p}%;background:${d.cl}"></div></div><div class="dp">${d.p}%</div><div class="dc">${d.c.toLocaleString()}</div></div>`).join('');
+}
+function rStacked(){
+  const vys=vy(),ix=vys.map(y=>YRS.indexOf(y));
+  let ugD,gD,lD;
+  if(S.level==='ug'){ugD=ix.map(i=>sc(D.ug[i]));gD=null;lD=null}
+  else if(S.level==='grad'){gD=ix.map(i=>sc(D.grad[i]));ugD=null;lD=null}
+  else if(S.level==='law'){lD=ix.map(i=>sc(D.law[i]));ugD=null;gD=null}
+  else{ugD=ix.map(i=>sc(D.ug[i]));gD=ix.map(i=>sc(D.grad[i]));lD=ix.map(i=>sc(D.law[i]))}
+  document.getElementById('nds').classList.toggle('show',[ugD,gD,lD].filter(Boolean).every(a=>a.every(v=>!v)));
+  const ds=[];
+  if(ugD)ds.push({label:'Undergraduate',data:ugD,backgroundColor:'#006633'});
+  if(gD)ds.push({label:'Graduate',data:gD,backgroundColor:'#C8993A'});
+  if(lD)ds.push({label:'Law',data:lD,backgroundColor:'#007A3D'});
+  mk('stackedChart',{type:'bar',data:{labels:vys,datasets:ds},options:{responsive:true,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toLocaleString()}`}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}}}}});
+}
+function rType(){
+  const lk=S.level==='all'?'all':S.level,t=D.types[lk]||D.types.all;
+  const arr=[{l:'Continuing',v:sc(t.cont),c:'#006633'},{l:'First-Time Frm.',v:sc(t.frsh),c:'#00A85A'},{l:'Transfer',v:sc(t.tr),c:'#C8993A'},{l:'New Graduate',v:sc(t.ng),c:'#007A3D'}].filter(r=>r.v>0);
+  document.getElementById('ndty').classList.toggle('show',arr.length===0);
+  document.getElementById('typesub').textContent=S.level==='all'?'All student types':LBLS.level[S.level]+' student types';
+  mk('typeChart',{type:'bar',data:{labels:arr.map(r=>r.l),datasets:[{data:arr.map(r=>r.v),backgroundColor:arr.map(r=>r.c),borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.raw.toLocaleString()} students`}}},scales:{x:{ticks:{callback:v=>v.toLocaleString()},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+apply();
+</script>
+</body>
+</html>

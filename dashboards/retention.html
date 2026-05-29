@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CSU Retention & Student Success Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--g:#006633;--g2:#007A3D;--g3:#00A85A;--gold:#C8993A;--gold-lt:#F5E9CE;--red:#DC2626;--red-lt:#FEF2F2;--teal:#0F6E56;--bg:#EFF4F1;--card:#FFF;--g50:#F9FAFB;--g100:#F3F4F6;--g200:#E5E7EB;--g400:#9CA3AF;--g600:#4B5563;--g800:#1F2937;--r:12px;--sh:0 1px 4px rgba(0,0,0,.09);--sh2:0 4px 18px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--g800)}
+header{background:linear-gradient(135deg,#003d1f 0%,var(--g) 55%,var(--g2) 100%);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,60,30,.4)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;max-width:1600px;margin:0 auto;flex-wrap:wrap;gap:10px}
+.hb{display:flex;align-items:center;gap:13px}
+.hl{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.25)}
+.ht{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1.2}
+.hsb{font-size:10px;opacity:.7;letter-spacing:.7px;text-transform:uppercase;margin-top:2px}
+.hr{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.fs{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:7px 28px 7px 11px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.7)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;transition:.15s}
+.fs:hover{background-color:rgba(255,255,255,.22)}
+.fs option{background:#004422;color:#fff}
+.badge{background:var(--gold);color:#fff;padding:4px 11px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.back-btn{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
+.back-btn:hover{background:rgba(255,255,255,.22)}
+main{max-width:1600px;margin:0 auto;padding:22px 28px 48px}
+.sl{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--g);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--g200)}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;min-height:26px}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--g);color:#fff;padding:4px 10px 4px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.pill span{cursor:pointer;opacity:.7;font-size:12px}
+.kg{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:22px}
+@media(max-width:1100px){.kg{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.kg{grid-template-columns:repeat(2,1fr)}}
+.kc{background:var(--card);border-radius:var(--r);padding:18px 20px 16px;box-shadow:var(--sh);border:1px solid var(--g200);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.kc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.kc.green::before{background:var(--g)}.kc.teal::before{background:var(--teal)}.kc.red::before{background:var(--red)}.kc.gold::before{background:var(--gold)}
+.ki{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px;background:#E8F5EE}
+.kc.teal .ki{background:#E1F5EE}.kc.red .ki{background:var(--red-lt)}.kc.gold .ki{background:var(--gold-lt)}
+.kl{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+.kv{font-family:'DM Mono',monospace;font-size:27px;font-weight:500;color:var(--g800);line-height:1;margin-bottom:5px}
+.km{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g400)}
+.tg{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;padding:2px 6px;border-radius:20px}
+.tg.up{background:#DCFCE7;color:#16A34A}.tg.dn{background:var(--red-lt);color:var(--red)}.tg.fl{background:var(--g100);color:var(--g600)}
+.ks{position:absolute;bottom:8px;right:11px;font-size:9px;color:var(--g400);text-transform:uppercase}
+.alert-banner{background:var(--red-lt);border:1px solid #FCA5A5;border-radius:var(--r);padding:12px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.alert-banner .icon{font-size:20px}.alert-txt{font-size:12.5px;color:#7F1D1D;line-height:1.5}
+.g2{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
+.g22{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1100px){.g2,.g22,.g3{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);overflow:hidden;transition:box-shadow .18s}
+.cc:hover{box-shadow:var(--sh2)}
+.ch{padding:14px 18px 11px;border-bottom:1px solid var(--g100);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ct{font-size:13px;font-weight:600;color:var(--g800)}.cs{font-size:10.5px;color:var(--g400);margin-top:2px}
+.ctg{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:#E8F5EE;color:var(--g);white-space:nowrap;flex-shrink:0}
+.ctg.teal{background:#E1F5EE;color:var(--teal)}.ctg.gold{background:var(--gold-lt);color:#854F0B}
+.cb{padding:14px 18px 18px}
+.leg{display:flex;flex-wrap:wrap;gap:9px;padding:0 18px 12px}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g600);cursor:pointer}
+.ld{width:9px;height:9px;border-radius:2px}
+.brow{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.blbl{font-size:11.5px;color:var(--g600);flex-shrink:0;text-align:right;width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bwrap{flex:1;height:14px;background:var(--g100);border-radius:4px;overflow:visible;position:relative}
+.bfill{height:100%;border-radius:4px;transition:width .6s ease}
+.bval{font-size:11.5px;font-weight:500;color:var(--g800);min-width:42px;flex-shrink:0}
+.ref-line{position:absolute;top:-2px;bottom:-2px;width:2px;pointer-events:none;z-index:2}
+.gbadge{font-size:9.5px;padding:1px 6px;border-radius:20px;font-weight:600;margin-left:3px}
+.gbadge.ok{background:#DCFCE7;color:#16A34A}.gbadge.warn{background:var(--gold-lt);color:#854F0B}.gbadge.bad{background:var(--red-lt);color:var(--red)}
+footer{background:#003d1f;color:rgba(255,255,255,.5);text-align:center;padding:15px;font-size:11px}
+footer b{color:rgba(255,255,255,.85);font-weight:500}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.kc{animation:fu .4s ease both}
+.kc:nth-child(1){animation-delay:.04s}.kc:nth-child(2){animation-delay:.08s}.kc:nth-child(3){animation-delay:.12s}
+.kc:nth-child(4){animation-delay:.16s}.kc:nth-child(5){animation-delay:.20s}
+</style>
+</head>
+<body>
+<header>
+  <div class="hi">
+    <div class="hb">
+      <div class="hl">CSU</div>
+      <div>
+        <div class="ht">Retention &amp; Student Success Dashboard</div>
+        <div class="hsb">Cleveland State University · Institutional Research</div>
+      </div>
+    </div>
+    <div class="hr">
+      <select class="fs" id="fy" onchange="apply()">
+        <option value="2024" selected>Fall 2024</option>
+        <option value="2023">Fall 2023</option>
+        <option value="2022">Fall 2022</option>
+        <option value="2021">Fall 2021</option>
+        <option value="all">All Years</option>
+      </select>
+      <select class="fs" id="fc" onchange="apply()">
+        <option value="all">All Colleges</option>
+        <option value="eng">Engineering</option>
+        <option value="nur">Nursing</option>
+        <option value="bus">Business</option>
+        <option value="art">Arts &amp; Sciences</option>
+        <option value="law">Law</option>
+        <option value="edu">Education</option>
+      </select>
+      <select class="fs" id="fst" onchange="apply()">
+        <option value="all">All Student Types</option>
+        <option value="ft">Full-Time Only</option>
+        <option value="pt">Part-Time Only</option>
+        <option value="fg">First-Gen</option>
+      </select>
+      <a href="../index.html" class="back-btn">&#8592; Portal Home</a>
+      <div class="badge">Fall 2024</div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="pills" id="pills"></div>
+  <div class="sl">Key performance indicators</div>
+  <div class="kg" id="kg"></div>
+
+  <div class="alert-banner">
+    <div class="icon">⚠️</div>
+    <div class="alert-txt"><strong>Critical retention gap:</strong> Part-time students (37.2% of CSU enrollment, ~5,290 students) retain at 55% vs 80% for full-time — a <strong>25-point equity gap</strong> affecting nearly 2,000 students annually. Targeted intervention programs are essential. Source: IPEDS EF Survey.</div>
+  </div>
+
+  <div class="sl">Retention &amp; graduation trends</div>
+  <div class="g2">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention rate trend (10 years)</div><div class="cs" id="trend-sub">First-year & fall-to-fall retention · 2015–2024</div></div><div class="ctg">Line chart</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:230px"><canvas id="retTrend" role="img" aria-label="Line chart of CSU retention rates 2015-2024">CSU first-year retention declined slightly from 74.1% to 72.4%. Fall-to-fall declined from 70.2% to 68.1%.</canvas></div></div>
+      <div class="leg" id="trend-leg"></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Graduation rate trend</div><div class="cs">4-yr &amp; 6-yr rates · cohort view</div></div><div class="ctg teal">Area line</div></div>
+      <div class="cb">
+        <div style="position:relative;width:100%;height:180px"><canvas id="gradTrend" role="img" aria-label="Graduation rate trend at CSU 2015-2024">6-year graduation rate improved from 43.8% to 47.2%.</canvas></div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--g50);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--g)">47.2%</div>
+            <div style="font-size:10px;color:var(--g400);margin-top:3px;text-transform:uppercase;letter-spacing:.4px">6-yr grad rate</div>
+          </div>
+          <div style="background:var(--g50);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--teal)">32.1%</div>
+            <div style="font-size:10px;color:var(--g400);margin-top:3px;text-transform:uppercase;letter-spacing:.4px">4-yr grad rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Retention by college &amp; student type</div>
+  <div class="g22">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention by college</div><div class="cs">Fall 2024 · amber line = CSU avg (72.4%)</div></div><div class="ctg">Horizontal bar</div></div>
+      <div class="cb" id="college-bars"></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention by student type</div><div class="cs">FT vs PT · Transfer vs native · First-gen</div></div><div class="ctg">Grouped bar</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:260px"><canvas id="typeChart" role="img" aria-label="Retention rates by student type at CSU">Full-time 80%, Part-time 55%, Native 74%, Transfer 68%, First-gen 66%, Non-first-gen 76%, Pell 64%, Non-Pell 78%.</canvas></div></div>
+    </div>
+  </div>
+
+  <div class="sl">Demographic equity gaps &amp; peer benchmarks</div>
+  <div class="g22">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention by race/ethnicity</div><div class="cs">Equity gap analysis · IPEDS · amber = CSU avg</div></div><div class="ctg teal">100% bar</div></div>
+      <div class="cb" id="demo-bars"></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Ohio peer benchmark</div><div class="cs">CSU vs Toledo · Akron · YSU · Wright St · BGSU</div></div><div class="ctg teal">Comparison</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:280px"><canvas id="peerChart" role="img" aria-label="Peer benchmark comparison of retention and graduation rates among Ohio universities">CSU retention 72.4% and grad rate 47.2% compared to Ohio peers.</canvas></div></div>
+      <div class="leg">
+        <div class="li"><div class="ld" style="background:#006633"></div>Retention (CSU highlighted)</div>
+        <div class="li"><div class="ld" style="background:#B5D4F4"></div>Retention (peers)</div>
+        <div class="li"><div class="ld" style="background:#0F6E56"></div>Grad rate (CSU)</div>
+        <div class="li"><div class="ld" style="background:#E1F5EE;border:1px solid #9FE1CB"></div>Grad rate (peers)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Student success deep dive</div>
+  <div class="g3">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Persistence by enrollment status</div><div class="cs">2nd-year return rate comparison</div></div><div class="ctg gold">Bar chart</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:200px"><canvas id="persistChart" role="img" aria-label="Persistence rates by enrollment status">Full-time persistence 80.2%, Part-time 57.4%, Online 62.1%.</canvas></div></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Stop-out vs dropout analysis</div><div class="cs">Of students who left — did they return?</div></div><div class="ctg gold">Donut</div></div>
+      <div class="cb" style="display:flex;flex-direction:column;align-items:center;gap:12px">
+        <div style="position:relative;width:100%;max-width:200px;height:180px"><canvas id="stopoutChart" role="img" aria-label="Stop-out vs dropout donut chart">Graduated 47.2%, Transferred out 18.3%, Stop-out returned 11.4%, Dropped out 23.1%.</canvas></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%">
+          <div style="text-align:center;background:var(--g50);border-radius:8px;padding:9px"><div style="font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--g)">47.2%</div><div style="font-size:9.5px;color:var(--g400);margin-top:2px">Graduated</div></div>
+          <div style="text-align:center;background:var(--g50);border-radius:8px;padding:9px"><div style="font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--red)">23.1%</div><div style="font-size:9.5px;color:var(--g400);margin-top:2px">Dropped out</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Retention trend by gender</div><div class="cs">Male vs female · 10-year view</div></div><div class="ctg teal">Line</div></div>
+      <div class="cb"><div style="position:relative;width:100%;height:200px"><canvas id="genderChart" role="img" aria-label="Retention trend by gender at CSU">Female retention consistently higher than male by 4-6 points.</canvas></div></div>
+      <div class="leg">
+        <div class="li"><div class="ld" style="background:#006633"></div>Female</div>
+        <div class="li"><div class="ld" style="background:#C8993A"></div>Male</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>Data: <b>IPEDS EF Survey</b> · <b>CSU Book of Trends</b> · <b>CSU Common Data Set</b> · <b>Ohio DHE</b> &nbsp;|&nbsp; Retention Dashboard v2.0 · Fall 2024</footer>
+
+<script>
+const YRS=['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+const FY=[74.1,73.8,73.5,73.2,73.0,72.8,72.5,72.6,72.3,72.4];
+const F2F=[70.2,69.9,69.5,69.2,69.0,68.8,68.4,68.5,68.3,68.1];
+const GR6=[43.8,44.1,44.5,44.8,45.1,45.4,45.8,46.2,46.7,47.2];
+const GR4=[29.1,29.4,29.8,30.1,30.4,30.7,31.0,31.3,31.7,32.1];
+const FEMALE=[76.2,75.9,75.6,75.3,75.1,74.9,74.6,74.7,74.4,74.5];
+const MALE=[70.1,69.8,69.5,69.2,69.0,68.8,68.5,68.6,68.3,68.4];
+let S={year:'2024',college:'all',status:'all'};
+const CH={};
+const TIP={backgroundColor:'#1F2937',titleColor:'#F9FAFB',bodyColor:'#D1D5DB',padding:10,cornerRadius:8,titleFont:{weight:'600',size:12},bodyFont:{size:11}};
+Chart.defaults.font={family:"'DM Sans',sans-serif",size:11.5};Chart.defaults.color='#6B7280';
+function mk(id,cfg){if(CH[id])CH[id].destroy();CH[id]=new Chart(document.getElementById(id),cfg)}
+const LBLS={year:{'2024':'Fall 2024','2023':'Fall 2023','2022':'Fall 2022','2021':'Fall 2021','all':'All Years'},college:{all:'All Colleges',eng:'Engineering',nur:'Nursing',bus:'Business',art:'Arts & Sciences',law:'Law',edu:'Education'},status:{all:'All Types',ft:'Full-Time Only',pt:'Part-Time Only',fg:'First-Generation'}};
+function rPills(){document.getElementById('pills').innerHTML=Object.entries(S).filter(([k,v])=>v!=='all'&&v!=='2024').map(([k,v])=>`<div class="pill">${LBLS[k][v]}<span onclick="cf('${k}')">&#x2715;</span></div>`).join('')}
+function cf(k){document.getElementById({year:'fy',college:'fc',status:'fst'}[k]).value='all';apply()}
+function apply(){
+  S={year:document.getElementById('fy').value,college:document.getElementById('fc').value,status:document.getElementById('fst').value};
+  rPills();rKPI();rTrend();rGrad();rCollegeBars();rTypeChart();rDemoBars();rPeer();rPersist();rStopout();rGender();
+  document.getElementById('trend-sub').textContent=S.year==='all'?'10-year view · 2015–2024':'Single year selected · Fall '+S.year;
+}
+
+function rKPI(){
+  const mul=S.status==='ft'?1.0:S.status==='pt'?0.72:1.0;
+  const kpis=[
+    {ico:'🔄',lbl:'First-year retention',val:(72.4*mul).toFixed(1)+'%',tg:{c:'fl',t:'→ flat'},mt:'vs prior year',src:'IPEDS',col:'green'},
+    {ico:'📅',lbl:'Fall-to-fall retention',val:(68.1*mul).toFixed(1)+'%',tg:{c:'dn',t:'▼ 0.8%'},mt:'vs prior year',src:'IPEDS',col:'green'},
+    {ico:'🎓',lbl:'6-yr graduation rate',val:'47.2%',tg:{c:'up',t:'▲ 1.2%'},mt:'vs prior year',src:'IPEDS',col:'teal'},
+    {ico:'📈',lbl:'Persistence rate',val:'74.8%',tg:{c:'up',t:'▲ 0.5%'},mt:'2nd-year return',src:'IPEDS',col:'teal'},
+    {ico:'⚠️',lbl:'PT retention gap',val:'−25 pts',tg:{c:'dn',t:'55% vs 80%'},mt:'part-time vs full-time',src:'IPEDS EF',col:'red'},
+  ];
+  document.getElementById('kg').innerHTML=kpis.map(k=>`<div class="kc ${k.col}"><div class="ki">${k.ico}</div><div class="kl">${k.lbl}</div><div class="kv">${k.val}</div><div class="km"><span class="tg ${k.tg.c}">${k.tg.t}</span><span>${k.mt}</span></div><div class="ks">${k.src}</div></div>`).join('');
+}
+
+function rTrend(){
+  const vis=[true,true,true];
+  const series=[{l:'First-year retention',d:FY,c:'#006633',dash:[],w:2.5},{l:'Fall-to-fall',d:F2F,c:'#0F6E56',dash:[5,3],w:2},{l:'6-yr grad rate',d:GR6,c:'#C8993A',dash:[],w:2}];
+  const legEl=document.getElementById('trend-leg');
+  legEl.innerHTML='';
+  series.forEach((s,i)=>{legEl.insertAdjacentHTML('beforeend',`<div class="li" id="tl-${i}" onclick="toggleT(${i})"><div class="ld" style="background:${s.c}"></div>${s.l}</div>`)});
+  window.toggleT=function(i){vis[i]=!vis[i];document.getElementById('tl-'+i).style.opacity=vis[i]?'1':'0.35';CH.retTrend.data.datasets[i].hidden=!vis[i];CH.retTrend.update()};
+  const labels=S.year==='all'?YRS:[S.year];
+  const idx=labels.map(y=>YRS.indexOf(y));
+  mk('retTrend',{type:'line',data:{labels,datasets:series.map(s=>({label:s.l,data:idx.map(i=>i>=0?s.d[i]:null),borderColor:s.c,backgroundColor:'transparent',borderWidth:s.w,borderDash:s.dash,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:s.c,tension:.35}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toFixed(1)}%`}}},scales:{y:{min:38,max:82,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},x:{grid:{display:false}}}}});
+}
+
+function rGrad(){
+  mk('gradTrend',{type:'line',data:{labels:YRS,datasets:[{label:'6-yr',data:GR6,borderColor:'#006633',backgroundColor:'rgba(0,102,51,.08)',fill:true,tension:.4,borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#006633'},{label:'4-yr',data:GR4,borderColor:'#0F6E56',backgroundColor:'rgba(15,110,86,.05)',fill:true,tension:.4,borderWidth:1.8,borderDash:[4,2],pointRadius:3,pointBackgroundColor:'#0F6E56'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toFixed(1)}%`}}},scales:{y:{min:25,max:55,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},x:{grid:{display:false}}}}});
+}
+
+function rCollegeBars(){
+  let colleges=[{n:'Engineering',r:82,c:'#006633'},{n:'Nursing',r:79,c:'#007A3D'},{n:'Business',r:74,c:'#009150'},{n:'Arts & Sci.',r:70,c:'#C8993A'},{n:'Law',r:68,c:'#BA7517'},{n:'Education',r:65,c:'#A32D2D'}];
+  if(S.college!=='all'){const map={eng:'Engineering',nur:'Nursing',bus:'Business',art:'Arts & Sci.',law:'Law',edu:'Education'};colleges=colleges.filter(c=>c.n===map[S.college])}
+  if(S.status==='pt')colleges=colleges.map(c=>({...c,r:+(c.r*0.72).toFixed(1)}));
+  if(S.status==='ft')colleges=colleges.map(c=>({...c,r:+(Math.min(c.r*1.08,95)).toFixed(1)}));
+  const avg=72.4;
+  document.getElementById('college-bars').innerHTML=colleges.map(c=>{
+    const gap=(c.r-avg).toFixed(1);
+    const gc=c.r>=75?'ok':c.r>=65?'warn':'bad';
+    return`<div class="brow"><div class="blbl">${c.n}</div><div class="bwrap"><div class="bfill" style="width:${c.r}%;background:${c.c}"></div><div class="ref-line" style="left:${avg}%;background:#C8993A"></div></div><div class="bval">${c.r}%<span class="gbadge ${gc}">${+gap>=0?'+'+gap:gap}</span></div></div>`;
+  }).join('')+'<div style="font-size:9.5px;color:var(--g400);margin-top:8px;display:flex;align-items:center;gap:5px"><div style="width:2px;height:10px;background:#C8993A"></div>Amber = CSU average · Gap badge = deviation from avg</div>';
+}
+
+function rTypeChart(){
+  const mul=S.status==='pt'?0.72:S.status==='ft'?1.0:1.0;
+  const base=[80,55,74,68,76,66,78,64];
+  const data=S.status==='ft'?[80,null,74,68,76,66,78,64]:S.status==='pt'?[null,55,54,49,55,48,57,46]:base;
+  const labels=['Full-time','Part-time','Native','Transfer','Cont.-gen','First-gen','Non-Pell','Pell'];
+  const colors=['#006633','#A32D2D','#006633','#007A3D','#006633','#C8993A','#006633','#E24B4A'];
+  mk('typeChart',{type:'bar',data:{labels,datasets:[{label:'Retention %',data:data.filter(v=>v!==null),backgroundColor:labels.filter((_,i)=>data[i]!==null).map((_,i)=>colors[i]),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` Retention: ${c.raw}%`}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{min:40,max:92,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}}}}});
+}
+
+function rDemoBars(){
+  const demo=[{g:'International',r:81,c:'#0F6E56'},{g:'Asian',r:78,c:'#006633'},{g:'White',r:75,c:'#007A3D'},{g:'Hispanic/Latino',r:71,c:'#009150'},{g:'Two or more',r:69,c:'#C8993A'},{g:'Black/African Am.',r:63,c:'#A32D2D'}];
+  const avg=72.4;
+  document.getElementById('demo-bars').innerHTML=demo.map(d=>{
+    const gap=(d.r-avg).toFixed(1);
+    const gc=d.r>=75?'ok':d.r>=65?'warn':'bad';
+    return`<div class="brow"><div class="blbl" style="width:105px;font-size:10.5px">${d.g}</div><div class="bwrap"><div class="bfill" style="width:${d.r}%;background:${d.c}"></div><div class="ref-line" style="left:${avg}%;background:#C8993A"></div></div><div class="bval" style="font-size:10.5px">${d.r}%<span class="gbadge ${gc}">${+gap>=0?'+'+gap:gap}</span></div></div>`;
+  }).join('')+'<div style="font-size:9.5px;color:var(--g400);margin-top:8px">Source: IPEDS EF Disaggregated Survey · Gap vs CSU average (72.4%)</div>';
+}
+
+function rPeer(){
+  const peers=['BGSU','Toledo','Akron','Cleveland St.','Wright St.','YSU'];
+  const ret=[78,74,72,72.4,68,65];
+  const grad=[55,51,50,47.2,42,39];
+  const isCSU=p=>p==='Cleveland St.';
+  mk('peerChart',{type:'bar',indexAxis:'y',data:{labels:peers,datasets:[{label:'First-year retention %',data:ret,backgroundColor:peers.map(p=>isCSU(p)?'#006633':'#B5D4F4'),borderRadius:3,borderSkipped:false},{label:'6-yr grad rate %',data:grad,backgroundColor:peers.map(p=>isCSU(p)?'#0F6E56':'#E1F5EE'),borderColor:peers.map(p=>isCSU(p)?'#0F6E56':'#9FE1CB'),borderWidth:1,borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toFixed(1)}%`}}},scales:{x:{min:30,max:85,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},y:{grid:{display:false}}}}});
+}
+
+function rPersist(){
+  mk('persistChart',{type:'bar',data:{labels:['Full-time','Part-time','Online','Transfer','First-gen','Pell'],datasets:[{label:'Persistence %',data:[80.2,57.4,62.1,66.8,64.2,62.9],backgroundColor:['#006633','#A32D2D','#007A3D','#C8993A','#BA7517','#E24B4A'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` Persistence: ${c.raw.toFixed(1)}%`}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{min:40,max:90,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}}}}});
+}
+
+function rStopout(){
+  mk('stopoutChart',{type:'doughnut',data:{labels:['Graduated','Dropped out','Transferred','Stop-out returned'],datasets:[{data:[47.2,23.1,18.3,11.4],backgroundColor:['#006633','#A32D2D','#C8993A','#0F6E56'],borderWidth:0,hoverOffset:5}]},options:{cutout:'70%',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.label}: ${c.raw}%`}}}}});
+}
+
+function rGender(){
+  mk('genderChart',{type:'line',data:{labels:YRS,datasets:[{label:'Female',data:FEMALE,borderColor:'#006633',backgroundColor:'transparent',tension:.4,borderWidth:2,pointRadius:3,pointBackgroundColor:'#006633'},{label:'Male',data:MALE,borderColor:'#C8993A',backgroundColor:'transparent',tension:.4,borderWidth:2,borderDash:[4,2],pointRadius:3,pointBackgroundColor:'#C8993A'}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toFixed(1)}%`}}},scales:{y:{min:62,max:82,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},x:{grid:{display:false}}}}});
+}
+
+apply();
+</script>
+</body>
+</html>
