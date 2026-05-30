@@ -9,12 +9,12 @@ A unified executive analytics portal hosting all CSU institutional dashboards in
 
 | Dashboard | Status | Description |
 |-----------|--------|-------------|
-| [Enrollment Executive](dashboards/enrollment.html) | ✅ Live | Total enrollment, UG/Grad mix, FT/PT, 10-yr trend |
-| [Retention & Student Success](dashboards/retention.html) | ✅ Live | Retention rates, grad rates, equity gaps, peer benchmarks |
-| Geographic Analysis | 🔨 Coming Soon | US map, Ohio county map, OOS feeder states |
-| Enrollment Pipeline | 🔨 Coming Soon | Funnel, new entrants, transfer trends |
-| Financial Aid | 📋 Planned | Pell rates, net price, aid gaps |
-| Academic Outcomes | 📋 Planned | Degrees awarded, time-to-degree |
+| [Enrollment Executive](dashboards/enrollment.html) |  Live | Total enrollment, UG/Grad mix, FT/PT, 10-yr trend |
+| [Retention & Student Success](dashboards/retention.html) |  Live | Retention rates, grad rates, equity gaps, peer benchmarks |
+| Geographic Analysis |  Coming Soon | US map, Ohio county map, OOS feeder states |
+| Enrollment Pipeline |  Coming Soon | Funnel, new entrants, transfer trends |
+| Financial Aid |  Planned | Pell rates, net price, aid gaps |
+| Academic Outcomes |  Planned | Degrees awarded, time-to-degree |
 
 ## Data Sources
 - IPEDS (Enrollment, Retention, Completions, Financial Aid surveys)
